@@ -1,0 +1,26 @@
+<meta xmlns="http://exist-db.org/xquery/repo">
+    <description>António de Morais Silva, Diccionario da Lingua Portugueza</description>
+    <author>Boris Lehečka</author>
+    <status>beta</status>
+    <license>GNU-LGPL</license>
+    <copyright>true</copyright>
+    <type>application</type>
+    <prepare>pre-install.xql</prepare>
+    <finish>post-install.xql</finish>
+    <target>mordigital</target>
+    <permissions user="mordigital" group="tei" mode="rw-r--r--" />
+    <deployed>2023-05-02T04:45:50.852+02:00</deployed>
+    <changelog>
+        <change version="0.1">
+            <p xmlns="http://www.w3.org/1999/xhtml">Initial version of MORDigital Web Application. Implemented features:</p>
+            <ul xmlns="http://www.w3.org/1999/xhtml">
+                <li>presentation of multiple TEI Lex-0 dictionaries </li>
+                <li>simple search (within headwords)</li>
+                <li>facets for search results</li>
+                <li>different color for grammar</li>
+                <li>configurable view of found dictionary entries (lemma only (i.e. lemma and variant) or full entry)</li>
+                <li>proofreading view (text with page image)</li>
+            </ul>
+        </change>
+    </changelog>
+</meta>

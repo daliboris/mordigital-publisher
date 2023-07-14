@@ -1,0 +1,36 @@
+{
+    "app": {
+        "facets": {
+            "partOfSpeech": "Slovní druh",
+            "domain": "Sémantický okruh",
+            "object-language": "Výchozí jazyk",
+            "target-language": "Cílový jazyk",
+            "polysemy": "Polysémie",
+            "dictionary": "Slovník",
+            "attestation" : "Zdroje",
+            "show-all": "Zobrazit vše"
+        },
+        "languages": {
+            "cs": "čeština",
+            "en": "angličtina",
+            "pt": "portugalština"
+        },
+        "messages": {
+            "restricted": "Pro zobrazení tohoto obsahu se musíte přihlásit."
+        }
+    },
+    "document": {
+        "view" : {
+            "label" : "Zobrazit",
+            "page" : "Stránky",
+            "div" : "Kapitoly",
+            "single" : "Celý text",
+            "proofreading" : "Kontrola"
+        }
+    },
+    "dictionary" : {
+        "parts" : {
+                "hewdwords" : "Hesla (lemmata)"
+        }
+    }
+}

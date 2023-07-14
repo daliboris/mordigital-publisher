@@ -1,0 +1,36 @@
+{
+    "app": {
+        "facets": {
+            "partOfSpeech": "[Part-of-speech]",
+            "domain": "[Domain]",
+            "object-language": "[Object language]",
+            "target-language": "[Target language]",
+            "polysemy": "[Polysemy]",
+            "dictionary": "[Dictionary]",
+            "attestation" : "[Attestation]",
+            "show-all": "[Show all]"
+        },
+        "languages": {
+            "cs": "[Czech]",
+            "en": "[English]",
+            "pt": "[Portuguese]"
+        },
+        "messages": {
+            "restricted": "[You need to be logged in to see this content.]"
+        }
+    },
+    "document": {
+        "view" : {
+            "label" : "[Show]",
+            "page" : "[Pages]",
+            "div" : "[Chapters]",
+            "single" : "[Whole text]",
+            "proofreading" : "[Proofreading]"
+        }
+    },
+    "dictionary" : {
+        "parts" : {
+                "hewdwords" : "[Headwords (lemmas)]"
+        }
+    }
+}

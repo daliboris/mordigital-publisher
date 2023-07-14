@@ -1,0 +1,47 @@
+
+
+# file used by existdb-vscode (https://marketplace.visualstudio.com/items?itemName=eXist-db.existdb-vscode) add-in for the files synchronization with eXist-db
+.existdb.json
+
+# setting files used by xst command line tool (https://github.com/eXist-db/xst)
+*.xstrc
+
+# worskapce file used by Visual Studio Code
+*.code-workspace
+
+# directory with settings used by Visual Studio Code
+.vscode
+
+# build properties for local settings
+local.build.properties
+
+# build directory with generated eXist-db module
+build
+
+# build directory with generated files
+transform
+
+# directory with node module (used for local environment)
+node_modules
+
+# direcotries and files imported by webcomponents (used for local environment)
+resources/scripts/*.js
+resources/scripts/*.map
+!resources/scripts/browse.js
+resources/lib/
+
+# CSS files imported by webcomponents (used for local environment)
+resources/css/leaflet/
+resources/css/prismjs
+resources/css/pagedjs
+resources/css/gridjs
+resources/css/tom-select
+resources/css/components.css
+
+# images imported by webcomponents (used for local environment)
+resources/images/openseadragon
+resources/images/leaflet
+
+# localization files imported by webcomponents (used for local environment)
+resources/i18n/common
+

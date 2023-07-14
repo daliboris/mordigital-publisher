@@ -1,0 +1,14 @@
+.fw {
+    font-size: 125%;
+    font-weight: bold;
+}
+
+
+.fw:has(+ :not(.fw))::after {
+    content: '\a';
+    white-space: pre;
+}
+
+.gram {
+    color: red;
+}

@@ -8,11 +8,11 @@
   "servers": [
     {
       "description": "Endpoint for testing on localhost",
-      "url": "/exist/apps/modigital"
+      "url": "/exist/apps/mordigital"
     }
   ],
   "paths": {
-    "/api/lex/version": {
+    "/api/lex0/version": {
       "get": {
         "summary": "Get version of the current API",
         "operationId": "lapi:version",
@@ -212,7 +212,7 @@
         }
       }
     },
-    "/api/lex/project": {
+    "/api/lex0/project": {
       "get": {
         "summary": "Get detailed information about current project",
         "operationId": "lapi:project",
@@ -412,7 +412,7 @@
         }
       }
     },
-    "/api/lex/contents": {
+    "/api/lex0/contents": {
       "get": {
         "summary": "Shows contents of a dictionary",
         "operationId": "lapi:contents",
@@ -704,7 +704,7 @@
         }
       }
     },
-    "/api/lex/browse": {
+    "/api/lex0/browse": {
       "get": {
         "summary": "Browse through TEI Publisher collections",
         "operationId": "lapi:browse",
@@ -788,6 +788,29 @@
               "type": "boolean",
               "default": false
             }
+          },
+          {
+            "name": "entry-parts",
+            "in": "query",
+            "description": "Parts of the entry to be returned.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "enum": [
+                "lemma",
+                "grammar",
+                "definition",
+                "attestation",
+                "translation",
+                "etymology"
+              ],
+              "default": "",
+              "description": "Parts of the entry to be returned. Order of the parts in the source document is preserved."
+            },
+            "style": "form",
+            "explode": true
           },
           {
             "name": "format",
@@ -1063,7 +1086,7 @@
         }
       }
     },
-    "/api/lex/search": {
+    "/api/lex0/search": {
       "get": {
         "summary": "Run a search on all TEI Publisher collections",
         "operationId": "lapi:search",
@@ -1350,19 +1373,23 @@
             "in": "query",
             "description": "Parts of the entry to be returned.",
             "schema": {
-              "default": "",
               "type": "array",
               "items": {
                 "type": "string"
               },
               "enum": [
-                "headword",
-                "sense",
+                "lemma",
                 "grammar",
-                "quotation"
+                "definition",
+                "attestation",
+                "translation",
+                "etymology"
               ],
+              "default": "",
               "description": "Parts of the entry to be returned. Order of the parts in the source document is preserved."
-            }
+            },
+            "style": "form",
+            "explode": true
           },
           {
             "name": "start",
@@ -1583,7 +1610,7 @@
         }
       }
     },
-    "/api/lex/search/facets": {
+    "/api/lex0/search/facets": {
       "get": {
         "summary": "List facets",
         "description": "Return a list of facet counts for current search results",
@@ -2043,7 +2070,7 @@
         }
       }
     },
-    "/api/lex/search/autocomplete": {
+    "/api/lex0/search/autocomplete": {
       "get": {
         "summary": "List possible completions",
         "description": "Return a list of possible completions for the given search term",
@@ -2274,7 +2301,7 @@
         }
       }
     },
-    "/api/lex/dictionaries": {
+    "/api/lex0/dictionaries": {
       "get": {
         "summary": "Browse through collection of dictionaries",
         "operationId": "lapi:dictionaries",
@@ -2287,7 +2314,7 @@
             "in": "query",
             "description": "Parts of the dictionary to be returned.",
             "schema": {
-              "default": "header",
+              "default": "",
               "type": "array",
               "items": {
                 "type": "string"
@@ -2307,19 +2334,23 @@
             "in": "query",
             "description": "Parts of the entry to be returned.",
             "schema": {
-              "default": "",
               "type": "array",
               "items": {
                 "type": "string"
               },
               "enum": [
-                "headword",
-                "sense",
+                "lemma",
                 "grammar",
-                "quotation"
+                "definition",
+                "attestation",
+                "translation",
+                "etymology"
               ],
+              "default": "",
               "description": "Parts of the entry to be returned. Order of the parts in the source document is preserved."
-            }
+            },
+            "style": "form",
+            "explode": true
           },
           {
             "name": "start",
@@ -2531,7 +2562,7 @@
         }
       }
     },
-    "/api/lex/dictionaries/{id}/contents": {
+    "/api/lex0/dictionaries/{id}/contents": {
       "get": {
         "summary": "Shows contents of a dictionary",
         "operationId": "lapi:dictionary-contents",
@@ -2824,7 +2855,7 @@
         }
       }
     },
-    "/api/lex/dictionaries/{id}/entries": {
+    "/api/lex0/dictionaries/{id}/entries": {
       "get": {
         "summary": "Browse through collection of entries within a dictionary",
         "operationId": "lapi:dictionary-entries",
@@ -3127,7 +3158,7 @@
         }
       }
     },
-    "/api/lex/dictionaries/{id}/entries/{entry-id}": {
+    "/api/lex0/dictionaries/{id}/entries/{entry-id}": {
       "get": {
         "summary": "Get dictionary entry",
         "operationId": "lapi:dictionary-entry",
@@ -3455,7 +3486,7 @@
         }
       }
     },
-    "/api/lex/dictionaries/{id}/entries/{entry-id}/comments": {
+    "/api/lex0/dictionaries/{id}/entries/{entry-id}/comments": {
       "get": {
         "summary": "Get comments for dictionary entry",
         "operationId": "lapi:dictionary-entry-commnets",
@@ -3765,7 +3796,7 @@
         }
       }
     },
-    "/api/lex/domains/{format}": {
+    "/api/lex0/domains/{format}": {
       "get": {
         "summary": "List domains, semantic categories",
         "description": "Retrieve list of semantic categories in format required by pb-split-list",
@@ -5467,6 +5498,29 @@
             }
           },
           {
+            "name": "entry-parts",
+            "in": "query",
+            "description": "Parts of the entry to be returned.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "enum": [
+                "lemma",
+                "grammar",
+                "definition",
+                "attestation",
+                "translation",
+                "etymology"
+              ],
+              "default": "",
+              "description": "Parts of the entry to be returned. Order of the parts in the source document is preserved."
+            },
+            "style": "form",
+            "explode": true
+          },
+          {
             "name": "start",
             "in": "query",
             "description": "Start offset of the first item to show from the result set",
@@ -6254,10 +6308,12 @@
           "type": "string"
         },
         "enum": [
-          "headword",
-          "sense",
+          "lemma",
           "grammar",
-          "quotation"
+          "definition",
+          "attestation",
+          "translation",
+          "etymology"
         ],
         "default": "",
         "description": "Parts of the entry to be returned. Order of the parts in the source document is preserved."
@@ -6610,7 +6666,7 @@
         "in": "query",
         "description": "Parts of the dictionary to be returned.",
         "schema": {
-          "default": "header",
+          "default": "",
           "type": "array",
           "items": {
             "type": "string"
@@ -6630,19 +6686,23 @@
         "in": "query",
         "description": "Parts of the entry to be returned.",
         "schema": {
-          "default": "",
           "type": "array",
           "items": {
             "type": "string"
           },
           "enum": [
-            "headword",
-            "sense",
+            "lemma",
             "grammar",
-            "quotation"
+            "definition",
+            "attestation",
+            "translation",
+            "etymology"
           ],
+          "default": "",
           "description": "Parts of the entry to be returned. Order of the parts in the source document is preserved."
-        }
+        },
+        "style": "form",
+        "explode": true
       },
       "QueryParameter": {
         "name": "query",

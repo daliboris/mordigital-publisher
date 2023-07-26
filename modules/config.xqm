@@ -36,15 +36,20 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
  :)
 (: declare variable $config:webcomponents :="2.4.5"; :)
 (: declare variable $config:webcomponents := "dev"; :)
-declare variable $config:webcomponents := "local";
+ declare variable $config:webcomponents := "local";
 
 (:~
  : CDN URL to use for loading webcomponents. Could be changed if you created your
  : own library extending pb-components and published it to a CDN.
  :)
 (: declare variable $config:webcomponents-cdn := "https://cdn.jsdelivr.net/npm/@teipublisher/pb-components"; :)
-declare variable $config:webcomponents-cdn := "https://cdn.tei-publisher.com/";
+(: declare variable $config:webcomponents-cdn := "https://cdn.tei-publisher.com/"; :)
 (: declare variable $config:webcomponents-cdn := "http://localhost:8000"; :)
+
+declare variable $config:webcomponents-cdn := if($config:webcomponents = "dev") then
+        "http://localhost:8000"
+    else
+        "https://cdn.tei-publisher.com/";
 
 (:~~
  : A list of regular expressions to check which external hosts are

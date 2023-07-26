@@ -17,7 +17,7 @@
  :)
 xquery version "3.1";
 
-module namespace facets="http://www.tei-c.org/tei-simple/query/tei-lex-facets";
+module namespace facets="http://www.tei-c.org/tei-simple/query/facets-lex0";
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 

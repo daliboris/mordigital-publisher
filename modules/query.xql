@@ -24,7 +24,7 @@ import module namespace jats-query="http://www.tei-c.org/tei-simple/query/jats" 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace nav="http://www.tei-c.org/tei-simple/navigation" at "navigation.xql";
 
-import module namespace tei-lex-query="http://www.tei-c.org/tei-simple/query/tei-lex" at "query-tei-lex.xql";
+import module namespace lex0-query="http://www.tei-c.org/tei-simple/query/lex0" at "query-lex0.xql";
 
 declare variable $query:QUERY_OPTIONS := map {
     "leading-wildcard": "yes",
@@ -73,10 +73,10 @@ declare %private function query:dispatch($config as map(*), $function as xs:stri
  :)
 declare function query:query-default($fields as xs:string+, $query as xs:string,
     $target-texts as xs:string*, $sortBy as xs:string*) {
+    lex0-query:query-default($fields, $query, $target-texts, $sortBy),
     tei-query:query-default($fields, $query, $target-texts, $sortBy),
     docbook-query:query-default($fields, $query, $target-texts, $sortBy),
-    jats-query:query-default($fields, $query, $target-texts, $sortBy),
-    tei-lex-query:query-default($fields, $query, $target-texts, $sortBy)
+    jats-query:query-default($fields, $query, $target-texts, $sortBy)
 };
 
 declare function query:options($sortBy as xs:string*) {
@@ -106,10 +106,10 @@ declare function query:options($sortBy as xs:string*, $field as xs:string?) {
 
 declare function query:query-metadata($root as xs:string?, $field as xs:string?, $query as xs:string?, $sort as xs:string) {
     let $results := (
+        lex0-query:query-metadata($root, $field, $query, $sort) |
         tei-query:query-metadata($root, $field, $query, $sort) |
         docbook-query:query-metadata($root, $field, $query, $sort) |
-        jats-query:query-metadata($root, $field, $query, $sort) |
-        tei-lex-query:query-metadata($root, $field, $query, $sort)
+        jats-query:query-metadata($root, $field, $query, $sort)
     )
     let $mode := 
         if ((empty($query) or $query = '') and empty(request:get-parameter-names()[starts-with(., 'facet-')])) then 
@@ -139,8 +139,8 @@ declare function query:get-current($config as map(*), $div as node()?) {
 };
 
 declare function query:autocomplete($doc as xs:string?, $fields as xs:string+, $q as xs:string) {
+    lex0-query:autocomplete($doc, $fields, $q),
     tei-query:autocomplete($doc, $fields, $q),
     docbook-query:autocomplete($doc, $fields, $q),
-    jats-query:autocomplete($doc, $fields, $q),
-    tei-lex-query:autocomplete($doc, $fields, $q)
+    jats-query:autocomplete($doc, $fields, $q)
 };

@@ -3,7 +3,7 @@ xquery version "3.1";
 module namespace test="http://www.tei-c.org/tei-simple/test";
 declare namespace map = "http://www.w3.org/2005/xpath-functions/map";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
-import module namespace lapi="http://www.tei-c.org/tei-simple/query/tei-lex" at "query-tei-lex.xql";
+import module namespace lapi="http://www.tei-c.org/tei-simple/query/lex0" at "query-lex0.xql";
 import module namespace qrp="https://www.daliboris.cz/ns/xquery/query-parser/1.0"  at "query-parser.xql";
 import module namespace edq = "http://www.daliboris.cz/schema/ns/xquery" at "exist-db-query-parser.xql";
 

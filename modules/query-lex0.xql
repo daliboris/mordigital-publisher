@@ -1,12 +1,12 @@
 xquery version "3.1";
 
-module namespace lapi="http://www.tei-c.org/tei-simple/query/tei-lex";
+module namespace lapi="http://www.tei-c.org/tei-simple/query/lex0";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
-declare namespace map = "http://www.w3.org/2005/xpath-functions/map";
+declare namespace map="http://www.w3.org/2005/xpath-functions/map";
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
-(:import module namespace nav="http://www.tei-c.org/tei-simple/navigation/tei-lex" at "navigation-tei-lex.xql";:)
+(:import module namespace nav="http://www.tei-c.org/tei-simple/navigation/lex0" at "navigation-lex0.xql";:)
 import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xql";
 import module namespace nav="http://www.tei-c.org/tei-simple/navigation/tei" at "navigation-tei.xql";
 import module namespace query="http://www.tei-c.org/tei-simple/query" at "query.xql";
@@ -16,7 +16,7 @@ import module namespace dapi="http://teipublisher.com/api/documents" at "lib/api
 import module namespace router="http://e-editiones.org/roaster";
 import module namespace capi="http://teipublisher.com/api/collection" at "lib/api/collection.xql";
 (: import module namespace facets="http://teipublisher.com/facets" at "facets.xql"; :)
-import module namespace lfacets="http://www.tei-c.org/tei-simple/query/tei-lex-facets";
+import module namespace lfacets="http://www.tei-c.org/tei-simple/query/facets-lex0" at "facets-lex0.xml";
 
 import module namespace rq="http://www.daliboris.cz/ns/xquery/request"  at "request.xql";
 import module namespace qrp="https://www.daliboris.cz/ns/xquery/query-parser/1.0"  at "query-parser.xql";

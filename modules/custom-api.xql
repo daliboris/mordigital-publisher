@@ -12,8 +12,8 @@ module namespace api="http://teipublisher.com/api/custom";
 import module namespace rutil="http://e-editiones.org/roaster/util";
 import module namespace app="teipublisher.com/app" at "app.xql";
 
-import module namespace lfacets="http://www.tei-c.org/tei-simple/query/tei-lex-facets" at "facets-tei-lex.xql";
-import module namespace lapi="http://www.tei-c.org/tei-simple/query/tei-lex" at "query-tei-lex.xql";
+import module namespace lfacets="http://www.tei-c.org/tei-simple/query/facets-lex0" at "facets-lex0.xql";
+import module namespace lapi="http://www.tei-c.org/tei-simple/query/lex0" at "query-lex0.xql";
 import module namespace tapi="http://www.tei-c.org/tei-simple/test" at "test-search.xql";
 
 (:~

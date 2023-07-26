@@ -588,7 +588,10 @@ declare function config:default-config($docUri as xs:string?) {
 declare function config:document-type($div as element()) {
     switch (namespace-uri($div))
         case "http://www.tei-c.org/ns/1.0" return
-            "tei"
+            if($div/ancestor-or-self::tei:TEI/@type = 'lex-0') then
+                "lex0"
+            else
+                "tei"
         case "http://docbook.org/ns/docbook" return
             "docbook"
         default return

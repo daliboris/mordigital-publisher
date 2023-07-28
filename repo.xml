@@ -11,6 +11,11 @@
     <permissions user="mordigital" group="tei" mode="rw-r--r--" />
     <deployed>2023-05-02T04:45:50.852+02:00</deployed>
     <changelog>
+        <change version="0.1.2">
+            <ul xmlns="http://www.w3.org/1999/xhtml">
+                <li>dependency on mordigital-data as semver-min</li>
+            </ul>
+        </change>
         <change version="0.1.1">
             <ul xmlns="http://www.w3.org/1999/xhtml">
                 <li>refactoring code (lex0 modules and namespaces)</li>

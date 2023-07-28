@@ -35,8 +35,8 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
  : (default: 8000, but check where your server is running).
  :)
 (: declare variable $config:webcomponents :="2.4.5"; :)
-(: declare variable $config:webcomponents := "dev"; :)
- declare variable $config:webcomponents := "local";
+declare variable $config:webcomponents := "dev";
+ (: declare variable $config:webcomponents := "local"; :)
 
 (:~
  : CDN URL to use for loading webcomponents. Could be changed if you created your
@@ -73,9 +73,9 @@ declare variable $config:enable-proxy-caching :=
 ;
 
 (:~
- : Should documents be located by xml:id or filename?
+ : Should documents be located by xml:id (true()) or filename (false())?
  :)
-declare variable $config:address-by-id := true();
+declare variable $config:address-by-id := false();
 
 (:~
  : Set default language for publisher app i18n
@@ -88,13 +88,13 @@ declare variable $config:default-language := "en";
  : the parameters below for further configuration), or 'page' to browse
  : a document by actual pages determined by TEI pb elements.
  :)
-declare variable $config:default-view :="div";
+declare variable $config:default-view :="page";
 
 (:
  : The default HTML template used for viewing document content. This can be
  : overwritten by the teipublisher processing instruction inside a TEI document.
  :)
-declare variable $config:default-template :="view.html";
+declare variable $config:default-template :="proofreading.html";
 
 (:
  : The element to search by default, either 'tei:div' or 'tei:text'.

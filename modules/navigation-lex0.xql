@@ -117,16 +117,16 @@ declare function nav:sort($sortBy as xs:string, $items as element()*) {
 
 
 declare function nav:get-first-page-start($config as map(*), $data as element()) {
-    tei-nav:get-first-page-start($config, $data)
+    (: tei-nav:get-first-page-start($config, $data) :)
 
-    (:
+    
     let $pb := ($data//tei:pb)[1]
     return
         if ($pb) then
             $pb
         else
             $data/tei:TEI//tei:text
-    :)
+    
 };
 
 

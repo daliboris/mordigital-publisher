@@ -80,15 +80,31 @@
             <pb-toggle-feature emit="transcription" subscribe="transcription" name="entry-parts" on="headword" off="">
                 <pb-i18n key="dictionary.parts.hewdwords">Headwords only</pb-i18n>
             </pb-toggle-feature>
+            <pb-toggle-feature emit="transcription" subscribe="transcription" name="view" on="page" off="div" checked="checked">
+                <pb-i18n key="document.view.page">Page</pb-i18n>
+            </pb-toggle-feature>
+            <!--
+            <pb-select-feature emit="transcription" subscribe="transcription" id="select-view" name="view" label="document.view.label" selected="0" items="[
+                        {&quot;name&quot;: &quot;document.view.page&quot;, &quot;properties&quot;: {&quot;view&quot;: &quot;page&quot;}},
+                        {&quot;name&quot;: &quot;document.view.div&quot;, &quot;properties&quot;: {&quot;view&quot;: &quot;div&quot;}},
+                        {&quot;name&quot;: &quot;document.view.single&quot;, &quot;properties&quot;: {&quot;view&quot;: &quot;single&quot;}}
+                        ]">
+            </pb-select-feature>
+            -->
+            <!-- <pb-select-template /> -->
+            <!--
             <pb-select-feature emit="transcription" subscribe="transcription" id="select-view" name="view" label="document.view.label" selected="1" items="[
                         {&quot;name&quot;: &quot;document.view.page&quot;, &quot;properties&quot;: {&quot;view&quot;: &quot;page&quot;}},
                         {&quot;name&quot;: &quot;document.view.div&quot;, &quot;properties&quot;: {&quot;view&quot;: &quot;div&quot;}},
                         {&quot;name&quot;: &quot;document.view.single&quot;, &quot;properties&quot;: {&quot;view&quot;: &quot;single&quot;}}
                         ]">
             </pb-select-feature>
-            <pb-toggle-feature emit="transcription" subscribe="transcription" properties-on='{"template": "proofreading.html", "view": "page"}' properties-off='{"view": "page"}'>
+            -->
+            <!-- <pb-toggle-feature emit="transcription" subscribe="transcription"
+                properties-on="{ &quot;view&quot;: &quot;page&quot;}" 
+                properties-off="{&quot;view&quot;: &quot;div&quot;}">
                 <pb-i18n key="document.view.proofreading">Proofreading</pb-i18n>
-            </pb-toggle-feature>
+            </pb-toggle-feature> -->
             <!--
             <pb-toggle-feature emit="transcription" subscribe="transcription" name="view" on="page" off="div" init-from-view="init-from-view">
                 <pb-i18n key="document.view-type">Page View</pb-i18n>

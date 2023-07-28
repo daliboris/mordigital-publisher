@@ -35,8 +35,8 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
  : (default: 8000, but check where your server is running).
  :)
 (: declare variable $config:webcomponents :="2.4.5"; :)
-declare variable $config:webcomponents := "dev";
- (: declare variable $config:webcomponents := "local"; :)
+(: declare variable $config:webcomponents := "dev"; :)
+  declare variable $config:webcomponents := "local";
 
 (:~
  : CDN URL to use for loading webcomponents. Could be changed if you created your

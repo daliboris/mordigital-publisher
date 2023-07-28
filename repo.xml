@@ -11,6 +11,12 @@
     <permissions user="mordigital" group="tei" mode="rw-r--r--" />
     <deployed>2023-05-02T04:45:50.852+02:00</deployed>
     <changelog>
+        <change version="0.1.1">
+            <ul xmlns="http://www.w3.org/1999/xhtml">
+                <li>refactoring code (lex0 modules and namespaces)</li>
+                <li>proofreading view with facsimile as a default</li>
+            </ul>
+        </change>
         <change version="0.1.0">
             <p xmlns="http://www.w3.org/1999/xhtml">Initial version of MORDigital Web Application. Implemented features:</p>
             <ul xmlns="http://www.w3.org/1999/xhtml">

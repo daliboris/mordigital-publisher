@@ -1,8 +1,12 @@
-<?xml-model href="teipublisher_odds.xsd"?><TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xml:lang="en">
+<?xml-model href="teipublisher_odds.xsd"?><?teipublisher output="web"?><TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xml:lang="en">
     <teiHeader>
         <fileDesc>
             <titleStmt>
-                <title>Annotations</title>
+                <title>Annotations
+                 
+                 
+                 <desc>ODD used by the web-based annotation editor. Contains special rules to mark entities with the correct CSS classes</desc>
+                </title>
             </titleStmt>
             <publicationStmt>
                 <publisher>eXistSolutions GmbH</publisher>
@@ -45,7 +49,7 @@
                     <model behaviour="inline" cssClass="annotation annotation-person authority"/>
                 </elementSpec>
                 <elementSpec ident="pb" mode="change">
-                    <model behaviour="inline">
+                    <model behaviour="inline" cssClass="annotation annotation-pb before">
             <outputRendition xml:space="preserve" scope="after">
             content: '|';
             </outputRendition>
@@ -81,7 +85,7 @@
                 <elementSpec ident="place" mode="add">
                     <modelSequence>
             <model behaviour="heading">
-                <param name="content" value="placeName[@type=&#34;full&#34;]"/>
+                <param name="content" value="placeName[@type=&#34;main&#34;]"/>
                 <param name="level" value="3"/>
             </model>
             <model predicate="placeName[not(@type)]" behaviour="heading">
@@ -96,6 +100,21 @@
             </model>
         </modelSequence>
                 </elementSpec>
+                <elementSpec ident="org" mode="add">
+                    <modelSequence>
+            <model behaviour="heading">
+                <param name="content" value="orgName[@type=&#34;main&#34;]"/>
+                <param name="level" value="3"/>
+            </model>
+            <model predicate="orgName[not(@type)]" behaviour="heading">
+                <param name="content" value="string-join(orgName[not(@type)]/string(), '; ')"/>
+                <param name="level" value="4"/>
+            </model>
+            <model behaviour="block">
+                <param name="content" value="note/node()"/>
+            </model>
+        </modelSequence>
+                </elementSpec>
                 <elementSpec ident="rs" mode="change">
                     <model predicate="@type='abbreviation'" behaviour="inline" cssClass="annotation annotation-abbreviation"/>
                     <model behaviour="inline"/>
@@ -103,7 +122,7 @@
                 <elementSpec ident="person" mode="add">
                     <modelSequence>
             <model behaviour="heading">
-                <param name="content" value="persName[@type=&#34;full&#34;]"/>
+                <param name="content" value="persName[@type=&#34;main&#34;]"/>
                 <param name="level" value="3"/>
             </model>
             <model behaviour="block">

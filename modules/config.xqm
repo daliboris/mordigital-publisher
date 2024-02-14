@@ -9,7 +9,9 @@ module namespace config="http://www.tei-c.org/tei-simple/config";
 import module namespace http="http://expath.org/ns/http-client" at "java:org.exist.xquery.modules.httpclient.HTTPClientModule";
 import module namespace nav="http://www.tei-c.org/tei-simple/navigation" at "navigation.xql";
 import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xql";
+import module namespace custom-config = "http://www.tei-c.org/tei-simple/custom-config" at "custom-config.xqm";
 
+declare namespace array = "http://www.w3.org/2005/xpath-functions/array";
 declare namespace templates="http://exist-db.org/xquery/html-templating";
 
 declare namespace repo="http://exist-db.org/xquery/repo";
@@ -34,17 +36,18 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
  : In this case, change $config:webcomponents-cdn to point to http://localhost:port 
  : (default: 8000, but check where your server is running).
  :)
-(: declare variable $config:webcomponents :="2.4.5"; :)
-(: declare variable $config:webcomponents := "dev"; :)
-declare variable $config:webcomponents := "local";
+declare variable $config:webcomponents :="2.19.0";
 
 (:~
  : CDN URL to use for loading webcomponents. Could be changed if you created your
  : own library extending pb-components and published it to a CDN.
  :)
-(: declare variable $config:webcomponents-cdn := "https://cdn.jsdelivr.net/npm/@teipublisher/pb-components"; :)
-declare variable $config:webcomponents-cdn := "https://cdn.tei-publisher.com/";
+declare variable $config:webcomponents-cdn := "https://cdn.jsdelivr.net/npm/@teipublisher/pb-components";
+(: declare variable $config:webcomponents-cdn := "https://cdn.tei-publisher.com/"; :)
 (: declare variable $config:webcomponents-cdn := "http://localhost:8000"; :)
+
+(: Version of fore to use for annotation editor :)
+declare variable $config:fore :="1.9.0";
 
 (:~~
  : A list of regular expressions to check which external hosts are
@@ -68,9 +71,9 @@ declare variable $config:enable-proxy-caching :=
 ;
 
 (:~
- : Should documents be located by xml:id or filename?
+ : Should documents be located by xml:id (true()) or filename (false())?
  :)
-declare variable $config:address-by-id := true();
+declare variable $config:address-by-id := false();
 
 (:~
  : Set default language for publisher app i18n
@@ -83,13 +86,13 @@ declare variable $config:default-language := "en";
  : the parameters below for further configuration), or 'page' to browse
  : a document by actual pages determined by TEI pb elements.
  :)
-declare variable $config:default-view :="div";
+declare variable $config:default-view :="page";
 
 (:
  : The default HTML template used for viewing document content. This can be
  : overwritten by the teipublisher processing instruction inside a TEI document.
  :)
-declare variable $config:default-template :="view.html";
+declare variable $config:default-template :="lex0-proofreading.html";
 
 (:
  : The element to search by default, either 'tei:div' or 'tei:text'.
@@ -119,7 +122,7 @@ declare variable $config:pagination-fill := 5;
  : Display configuration for facets to be shown in the sidebar. The facets themselves
  : are configured in the index configuration, collection.xconf.
  :)
-declare variable $config:facets := [
+declare variable $config:facets := array:join( ([
     map {
         "dimension": "genre",
         "heading": "facets.genre",
@@ -140,116 +143,33 @@ declare variable $config:facets := [
                 case "en" return "English"
                 default return $label
         }
-    },
-    map {
-        "dimension": "dictionary",
-        "heading": "app.facets.dictionary",
-        "max": 5,
-        "hierarchical": false()
-    },
-    map {
-        "dimension": "polysemy",
-        "heading": "app.facets.polysemy",
-        "max": 5,
-        "hierarchical": false()
-    },
-    map {
-        "dimension": "entry-type",
-        "heading": "app.facets.entry-type",
-        "max": 5,
-        "hierarchical": false()
-    },
-    map {
-        "dimension": "attitude",
-        "heading": "app.facets.attitude",
-        "max": 5,
-        "hierarchical": false()
-    },
-    map {
-        "dimension": "domain",
-        "heading": "app.facets.domain",
-        "max": 5,
-        "hierarchical": false()
-    },
-    map {
-        "dimension": "frequency",
-        "heading": "app.facets.frequency",
-        "max": 5,
-        "hierarchical": false()
-    },
-    map {
-        "dimension": "geographic",
-        "heading": "app.facets.geographic",
-        "max": 5,
-        "hierarchical": false()
-    },
-    map {
-        "dimension": "hint",
-        "heading": "app.facets.hint",
-        "max": 5,
-        "hierarchical": false()
-    },
-    map {
-        "dimension": "meaningType",
-        "heading": "app.facets.meaningType",
-        "max": 5,
-        "hierarchical": false()
-    },
-    map {
-        "dimension": "normativity",
-        "heading": "app.facets.normativity",
-        "max": 5,
-        "hierarchical": false()
-    },
-    map {
-        "dimension": "socioCultural",
-        "heading": "app.facets.socioCultural",
-        "max": 5,
-        "hierarchical": false()
-    },
-    map {
-        "dimension": "textType",
-        "heading": "app.facets.textType",
-        "max": 5,
-        "hierarchical": false()
-    },
-    map {
-        "dimension": "time",
-        "heading": "app.facets.time",
-        "max": 5,
-        "hierarchical": false()
-    },
-    map {
-        "dimension": "attestation",
-        "heading": "app.facets.attestation",
-        "max": 5,
-        "hierarchical": false()
-    },
-    map {
-        "dimension": "attestation-author",
-        "heading": "app.facets.attestation-author",
-        "max": 5,
-        "hierarchical": false()
-    },
-    map {
-        "dimension": "attestation-title",
-        "heading": "app.facets.attestation-title",
-        "max": 5,
-        "hierarchical": false()
-    },
-    map {
-        "dimension": "metamark",
-        "heading": "app.facets.metamark",
-        "max": 5,
-        "hierarchical": false()
-    },
-    map {
-        "dimension": "pos",
-        "heading": "app.facets.pos",
-        "max": 5,
-        "hierarchical": false()
     }
-];
+], $custom-config:facets ));
+
+(:
+ : Which module will be used for generating facets.
+ : Module is choosen by the value of suffix in the module's name (after hyphen `-`).
+ : If `$custom-config:facets-version` is set to empty value (`()`) 
+ : the default implementation of facets will be used.
+:)
+declare variable $config:facets-version := ($custom-config:facets-version, "-simple")[1];
+
+(:
+ : Regular expression used for matching facet parameter in request.
+ : The expression is also used for creating facet name in facet HTML form.
+ : For example, facet name can look like `facet-dimension` or `facet[dimension]`.
+:)
+declare variable $config:query-facet-pattern := ($custom-config:query-facet-pattern, "^facet-(.*)$$")[1];
+
+(:
+ : Returns the name of the facet parametr used in query path.
+ : The same pattern is used for constructing the parameter name
+ : and for retrieving facet' name from the query path parameter.
+:)
+
+declare function config:facet-name($dimension as xs:string) {
+    translate($config:query-facet-pattern, "^\$$", "") => replace("\(\.\*\)", $dimension)
+};
 
 (:
  : The function to be called to determine the next content chunk to display.
@@ -279,7 +199,7 @@ declare variable $config:css-content-class := "content";
  : domain will share their users, so a user logged into application A
  : will be able to access application B.
  :)
-declare variable $config:login-domain := "org.exist.tei-simple";
+declare variable $config:login-domain := ($custom-config:login-domain, "org.exist.tei-simple")[1];
 
 (:~
  : Configuration XML for Apache FOP used to render PDF. Important here
@@ -401,17 +321,29 @@ declare variable $config:app-root :=
  : The context path to use for links within the application, e.g. menus.
  : The default should work when running on top of a standard eXist installation,
  : but may need to be changed if the app is behind a proxy.
+ :
+ : The context path is determined as follows:
+ :
+ : 1. if a system property `teipublisher.context-path` is set:
+ :  a. with value 'auto': determine context path by looking at the incoming request. This will
+ :     usually resolve to e.g. "/exist/apps/tei-publisher/".
+ :  b. otherwise use the value of the property
+ : 2. if an HTTP header X-Forwarded-Host is set, assume that eXist is running behind a proxy
+ :    and the app should be mapped to the root of the website (i.e. without /exist/apps/...)
+ : 3. otherwise determine path from request as in 1a.
  :)
 declare variable $config:context-path :=
     let $prop := util:system-property("teipublisher.context-path")
     return
-        if (not(empty($prop)) and $prop != "auto") 
-            then ($prop)
-        else if(not(empty(request:get-header("X-Forwarded-Host"))))
-            then ("")
-        else ( 
-            request:get-context-path() || substring-after($config:app-root, "/db") 
-        )  
+        if (exists($prop)) then
+            if ($prop = "auto") then
+                request:get-context-path() || substring-after($config:app-root, "/db") 
+            else
+                $prop
+        else if (exists(request:get-header("X-Forwarded-Host")))
+            then ""
+        else
+            request:get-context-path() || substring-after($config:app-root, "/db")
 ;
 
 (:~
@@ -430,8 +362,38 @@ declare variable $config:data-default := $config:data-root;
  : documents displayed in the browsing view.
  :)
 declare variable $config:data-exclude :=
-    doc($config:data-root || "/taxonomy.xml")//tei:text
+    doc($config:data-root || "/taxonomy.xml")//tei:text,
+    collection($config:register-root)//tei:text
 ;
+
+(:~
+ : The root of the collection hierarchy containing registers data.
+ :)
+declare variable $config:register-root := $config:data-root || "/registers";
+declare variable $config:register-forms := $config:data-root || "/registers/templates";
+
+declare variable $config:register-map := map {
+    "person": map {
+        "id": "pb-persons",
+        "default": "person-default",
+        "prefix": "person-"
+    },
+    "place": map {
+        "id": "pb-places",
+        "default": "place-default",
+        "prefix": "place-"
+    },
+    "organization": map {
+        "id": "pb-organization",
+        "default": "organization-default",
+        "prefix": "org-"
+    },
+    "term": map {
+        "id": "pb-keywords",
+        "default": "term-default",
+        "prefix": "category-"
+    }
+};
 
 (:~
  : The main ODD to be used by default
@@ -443,7 +405,7 @@ declare variable $config:default-odd :="mordigital.odd";
  : make sure to run modules/generate-pm-config.xql to update the main configuration
  : module for transformations (modules/pm-config.xql).
  :)
-declare variable $config:odd-available :=("teilex0.odd", "mordigital.odd");
+declare variable $config:odd-available :=("mordigital.odd", "teilex0.odd");
 
 (:~
  : List of ODD files which are used internally only, i.e. not for displaying information
@@ -588,7 +550,10 @@ declare function config:default-config($docUri as xs:string?) {
 declare function config:document-type($div as element()) {
     switch (namespace-uri($div))
         case "http://www.tei-c.org/ns/1.0" return
-            "tei"
+            if($div/ancestor-or-self::tei:TEI/@type = 'lex-0') then
+                "lex0"
+            else
+                "tei"
         case "http://docbook.org/ns/docbook" return
             "docbook"
         default return
@@ -728,7 +693,6 @@ declare function config:get-fonts-dir() as xs:string? {
             ()
 };
 
-
 (: 
 Maximum hits available for user. 
 If set to 0 all hits are available.
@@ -752,4 +716,35 @@ Maximum items returned for autocomplete function.
 :)
 declare variable $config:autocomplete-max-items := 30;
 
+
+(:~
+ : Function used for autocomplete suggesttion; what value will be displayed
+:)
 declare variable $config:autocomplete-return-values := function($key, $count) {$key};
+
+(:~
+ : Filter used for the list of available templates. 
+ : If the return value is set to `true()`, all templates are returned.
+ : You can define filter based on the template title or file name
+ : in combination with request parameters like `path`, `language` or `template`.
+:)
+declare function config:template-filter($request as map(*), $item as map(*)) {
+    let $f := function-lookup(xs:QName('custom-config:template-filter'), 2)
+    return if(exists($f)) then
+        $f($request, $item)
+    else
+        true()
+};
+
+(:~
+ : Function used for the sort of available templates.
+ : If the return value is set to `1` (or another the same value) the sort is undetermined.
+ : You can sort templates based on the title or file name.
+:)
+declare function config:template-sort($request as map(*), $item as map(*)) {
+    let $f := function-lookup(xs:QName('custom-config:template-sort'), 2)
+    return if(exists($f)) then
+        $f($request, $item)
+    else
+        1
+};

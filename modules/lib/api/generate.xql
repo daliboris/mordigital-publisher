@@ -31,7 +31,7 @@ declare variable $deploy:EXPATH_DESCRIPTOR :=
         version="0.1" spec="1.0">
         <dependency processor="http://exist-db.org" semver-min="5.3.0"/>
         <dependency package="http://exist-db.org/html-templating" semver="1"/>
-        <dependency package="http://existsolutions.com/apps/tei-publisher-lib" semver="3"/>
+        <dependency package="http://existsolutions.com/apps/tei-publisher-lib" semver="4"/>
         <dependency package="http://e-editiones.org/roaster" semver="1"/>
     </package>
 ;
@@ -56,7 +56,7 @@ declare variable $deploy:REPO_DESCRIPTOR :=
 ;
 
 declare variable $deploy:ANT_FILE :=
-    <project default="xar">
+<project default="xar">
         <xmlproperty file="expath-pkg.xml"/>
 
         <!-- Adjust path below to match location of your npm binary -->
@@ -67,8 +67,10 @@ declare variable $deploy:ANT_FILE :=
         <property name="build.dir" value="build"/>
         <property name="scripts.dir" value="node_modules/@teipublisher/pb-components/dist"/>
 
+       <property name="fore.dir" value="${{basedir}}/node_modules/@jinntec/fore/dist"/>
+
         <target name="clean">
-            <delete dir="${build}" />
+            <delete dir="${{build}}" />
             <delete dir="resources/scripts" includes="*.js *.map" />
             <delete dir="resources/images/leaflet" />
             <delete dir="resources/images/openseadragon" />
@@ -79,7 +81,11 @@ declare variable $deploy:ANT_FILE :=
 
         <target name="prepare">
             <copy todir="resources/scripts">
-                <fileset dir="${scripts.dir}">
+                <fileset dir="${{scripts.dir}}">
+                    <include name="*.js" />
+                    <include name="*.map" />
+                </fileset>
+                <fileset dir="${{fore.dir}}">
                     <include name="*.js" />
                     <include name="*.map" />
                 </fileset>
@@ -92,13 +98,16 @@ declare variable $deploy:ANT_FILE :=
             </copy>
             <copy todir="resources/css">
                 <fileset dir="node_modules/@teipublisher/pb-components/css"/>
+                <fileset dir="${{basedir}}/node_modules/@jinntec/fore/resources">
+                    <include name="*.css"/>
+                </fileset>
             </copy>
             <copy todir="resources/lib">
                 <fileset dir="node_modules/@teipublisher/pb-components/lib"/>
             </copy>
             
             <copy todir="resources/i18n/common">
-                <fileset dir="${scripts.dir}/../i18n/common" />
+                <fileset dir="${{scripts.dir}}/../i18n/common" />
             </copy>
         </target>
 
@@ -262,6 +271,7 @@ declare function deploy:store-xconf($collection as xs:string?, $json as map(*)) 
                         <facet dimension="feature" expression="nav:get-metadata(ancestor::tei:TEI, 'feature')"/>
                         <facet dimension="form" expression="nav:get-metadata(ancestor::tei:TEI, 'form')"/>
                         <facet dimension="period" expression="nav:get-metadata(ancestor::tei:TEI, 'period')"/>
+                        <facet dimension="place" expression="nav:get-metadata(., 'place')"/>
                     </text>
                     {
                         if ($json?index = "tei:div") then
@@ -269,6 +279,7 @@ declare function deploy:store-xconf($collection as xs:string?, $json as map(*)) 
                                 <ignore qname="{$json?index}"/>
                                 <facet dimension="genre" expression="nav:get-metadata(ancestor::tei:TEI, 'genre')" hierarchical="yes"/>
                                 <facet dimension="language" expression="nav:get-metadata(ancestor::tei:TEI, 'language')"/>
+                                <facet dimension="place" expression="nav:get-metadata(., 'place')"/>
                             </text>
                         else
                             ()
@@ -280,6 +291,63 @@ declare function deploy:store-xconf($collection as xs:string?, $json as map(*)) 
                     <text match="//tei:listPerson/tei:person/tei:persName"/>
                     <text match="//tei:listOrg/tei:org/tei:orgName"/>
                     <text match="//tei:taxonomy/tei:category/tei:catDesc"/>
+                    <text qname="tei:entry">
+                        <!--
+                        Naming conventions:
+                    
+                        name of the field = simple, user friendly (can be in the URL)
+                        name of the facet = simple, user friendly (can be in the URL)
+                        name of the parameter for nav:get-metadata function: XPath-like
+                        
+                        {element-name}-{XYZ}
+                        {attribute-name}-{XYZ}
+                        {element-name[attribute-name]}-{XYZ}
+                        {element-name[attribute-name=attribute-value]}-{XYZ}
+                    
+                        {XYZ}:
+                        -{content} = content of the element
+                        -{value} = value of the attribute
+                        -{value|value} = more possible values
+                        -{realisation} = either value of the attribute, or content of the element
+                        -{hierarchy} = hierarchical values defined in the taxonomy or in the value itself (like date)
+                        
+                        -->
+                        <field name="sortKey" expression="nav:get-metadata(., 'sortKey-realisation')"/>
+                        <field name="letter" expression="nav:get-metadata(., 'head[@type=letter]-content')"/>
+                        <field name="chapter-id" expression="nav:get-metadata(., 'chapter[@xml:id]-value')"/>
+                        <field name="chapter" expression="nav:get-metadata(., 'div[@type=letter]/@n-content')"/>
+                        <field name="lemma" expression="nav:get-metadata(., 'form[@type=lemma]-content')"/>
+                        <field name="definition" expression="nav:get-metadata(., 'def-content')"/>
+                        <field name="example" expression="nav:get-metadata(., 'cit[@type=example]-content')"/>
+                        <field name="pos" expression="nav:get-metadata(., 'gram[@type=pos]-content')"/>
+                        <facet dimension="dictionary" expression="nav:get-metadata(ancestor::tei:TEI, 'title[@type=main|full]-content')"/>
+                        <facet dimension="objectLanguage" expression="nav:get-metadata(., 'orth[xml:lang]-content')"/>
+                        <facet dimension="targetLanguage" expression="nav:get-metadata(., 'cit|def[xml:lang]-content')"/>
+                        <facet dimension="pos" expression="nav:get-metadata(., 'gram[@type=pos]-realisation')"/>
+                        <facet dimension="polysemy" expression="nav:get-metadata(., 'polysemy')"/>
+                        
+                        <field name="gloss" expression="nav:get-metadata(., 'gloss-content')"/>
+                        
+                        <facet dimension="entry-type" expression="nav:get-metadata(., 'entry[@type]-realisation')"/>
+                        
+                        <facet dimension="attitude" expression="nav:get-metadata(., 'usg[@type=attitude]-realisation')"/>
+                        <facet dimension="domain" expression="nav:get-metadata(., 'usg[@type=domain]-realisation')"/>
+                        <facet dimension="domain-hierarchy" expression="nav:get-metadata(., 'usg[@type=domain]-hierarchy')"  hierarchical="yes" />
+                        <facet dimension="domain-contemporary" expression="nav:get-metadata(., 'usg[@type=domain][not(node())]-hierarchy')"  hierarchical="yes" />
+                        <facet dimension="frequency" expression="nav:get-metadata(., 'usg[@type=frequency]-realisation')"/>
+                        <facet dimension="geographic" expression="nav:get-metadata(., 'usg[@type=geographic]-realisation')"/>
+                        <facet dimension="hint" expression="nav:get-metadata(., 'usg[@type=hint]-realisation')"/>
+                        <facet dimension="meaningType" expression="nav:get-metadata(., 'usg[@type=meaningType]-realisation')"/>
+                        <facet dimension="normativity" expression="nav:get-metadata(., 'usg[@type=normativity]-realisation')"/>
+                        <facet dimension="socioCultural" expression="nav:get-metadata(., 'usg[@type=socioCultural]-realisation')"/>
+                        <facet dimension="textType" expression="nav:get-metadata(., 'usg[@type=textType]-realisation')"/>
+                        <facet dimension="time" expression="nav:get-metadata(., 'usg[@type=time]-realisation')"/>
+                        
+                        <facet dimension="attestation" expression="nav:get-metadata(., 'bibl[@type=attestation]-realisation')"/>
+                        <facet dimension="attestation-author" expression="nav:get-metadata(., 'bibl[@type=attestation]/author-content')"/>
+                        <facet dimension="attestation-title" expression="nav:get-metadata(., 'bibl[@type=attestation]/title-content')"/>
+                        <facet dimension="metamark" expression="nav:get-metadata(., 'metamark[@function]-value')" />
+                    </text>
                     <text qname="dbk:article">
                         <field name="title" expression="nav:get-metadata(., 'title')"/>
                         <field name="author" expression="nav:get-metadata(., 'author')"/>
@@ -353,7 +421,10 @@ declare function deploy:expand($collection as xs:string, $resource as xs:string,
 
 declare function deploy:store-libs($target as xs:string, $userData as xs:string+, $permissions as xs:string) {
     let $path := $config:app-root || "/modules"
-    for $lib in ("map.xql", "facets.xql", "annotation-config.xqm", "nlp-config.xqm", xmldb:get-child-resources($path)[starts-with(., "navigation")],
+    for $lib in ("map.xql", "registers.xql", "teilex0.xql",
+        xmldb:get-child-resources($path)[matches(., "-config\.xq?")],
+        xmldb:get-child-resources($path)[starts-with(., "facets")],
+        xmldb:get-child-resources($path)[starts-with(., "navigation")],
         xmldb:get-child-resources($path)[starts-with(., "query")])
     return (
         xmldb:copy-resource($path, $lib, $target || "/modules", $lib)
@@ -418,8 +489,10 @@ declare function deploy:create-app($collection as xs:string, $json as map(*)) {
             'latest'
         else
             $config:webcomponents
+    let $fore := if ($config:fore = 'local') then 'latest' else $config:fore
     let $replacements := map {
         "^(.*\$config:webcomponents :=).*;$": '"' || $webcomponents || '";',
+        "^(.*\$config:fore :=).*;$": '"' || $fore || '";',
         "^(.*\$config:default-template :=).*;$": '"' || $json?template || '";',
         "^(.*\$config:default-view :=).*;$": '"' || $json?default-view || '";',
         "^(.*\$config:search-default :=).*;$": '"' || $json?index || '";',
@@ -439,19 +512,25 @@ declare function deploy:create-app($collection as xs:string, $json as map(*)) {
         deploy:copy-collection($collection || "/resources/fonts", $base || "/resources/fonts", ($json?owner, "tei"), "rw-r--r--"),
         deploy:copy-collection($collection || "/resources/scripts/annotations", $base || "/resources/scripts/annotations", ($json?owner, "tei"), "rw-r--r--"),
         deploy:copy-resource($collection || "/resources/scripts", $base || "/resources/scripts", "browse.js", ($json?owner, "tei"), "rw-r--r--"),
+        deploy:copy-resource($collection || "/resources/scripts", $base || "/resources/scripts", "teilex0.js", ($json?owner, "tei"), "rw-r--r--"),
         deploy:expand($collection || "/modules", "config.xqm", $replacements),
         deploy:store-libs($collection, ($json?owner, "tei"), "rw-r--r--"),
         deploy:expand($collection || "/modules/lib", "api.json", $replacements),
         deploy:copy-resource($collection || "/modules", $base || "/modules", "custom-api.json", ($json?owner, "tei"), "rw-r--r--"),
         deploy:expand($collection || "/modules", "custom-api.json", $replacements),
+        deploy:copy-resource($collection || "/modules", $base || "/modules", "teilex0-api.json", ($json?owner, "tei"), "rw-r--r--"),
+        deploy:expand($collection || "/modules", "teilex0-api.json", $replacements),
         deploy:copy-odd($collection, $json),
         deploy:create-transform($collection),
         deploy:copy-resource($collection, $base, "index.xql", ($json?owner, "tei"), "rw-r--r--"),
         deploy:copy-resource($collection || "/templates", $base || "/templates", "api.html", ($json?owner, "tei"), "rw-r--r--"),
         deploy:mkcol($collection || "/data", ($json?owner, "tei"), "rw-r--r--"),
         deploy:copy-resource($collection || "/data", $base || "/data", "taxonomy.xml", ($json?owner, "tei"), "rw-r--r--"),
+        deploy:copy-collection($collection || "/data/registers", $base || "/data/registers", ($json?owner, "tei"), "rw-r--r--"),
         deploy:copy-resource($collection || "/resources/css", $base || "/resources/css", "theme.css", ($json?owner, "tei"), "rw-r--r--"),
+        deploy:copy-resource($collection || "/resources/css", $base || "/resources/css", "annotate.css", ($json?owner, "tei"), "rw-r--r--"),
         deploy:copy-resource($collection || "/resources/i18n", $base || "/resources/i18n", "languages.json", ($json?owner, "tei"), "rw-r--r--"),
+        deploy:copy-collection($collection || "/resources/i18n/lex0", $base || "/resources/i18n/lex0", ($json?owner, "tei"), "rw-r--r--"),
         deploy:copy-resource($collection, $base, "icon.png", ($json?owner, "tei"), "rw-r--r--"),
         xmldb:store($collection, "package.json", deploy:package-json($json), "application/json"),
         xmldb:rename($collection, "gitignore.tmpl", ".gitignore")

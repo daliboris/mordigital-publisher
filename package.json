@@ -3,6 +3,7 @@
   "version" : "1.0.0",
   "description" : "António de Morais Silva, Diccionario de Lingua Portugueza",
   "dependencies" : {
-    "@daliboris/pb-components" : "git+https://github.com/daliboris/tei-publisher-components/#project/lediir"
+    "@daliboris/pb-components" : "git+https://github.com/daliboris/tei-publisher-components/#project/lediir",
+    "@jinntec/fore": "^1.9.0"
   }
 }

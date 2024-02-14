@@ -19,7 +19,7 @@ declare function iapi:version($request as map(*)) {
 };
 
 declare function iapi:list-templates($request as map(*)) {
-    array {
+    let $all := array {
         for $html in collection($config:app-root || "/templates/pages")/*
         let $description := $html//meta[@name="description"]/@content/string()
         return
@@ -28,4 +28,6 @@ declare function iapi:list-templates($request as map(*)) {
                 "title": $description
             }
     }
+    let $all := array:sort($all, default-collation(), config:template-sort($request, ?))
+    return array:filter($all, config:template-filter($request, ?))
 };

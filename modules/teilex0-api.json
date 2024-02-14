@@ -1,0 +1,4991 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "TEI Lex-0 Dictionaries API for TEI Publisher",
+    "description": "API for accessing dictionaries, entries and other parts via TEI Publisher application."
+  },
+  "servers": [
+    {
+      "description": "Endpoint for testing on localhost",
+      "url": "/exist/apps/teilex0-publisher"
+    }
+  ],
+  "paths": {
+    "/api/teilex0/version": {
+      "get": {
+        "summary": "Get version of the current API",
+        "operationId": "lapi:version",
+        "tags": [
+          "info"
+        ],
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "description": "The format to return: either `xml`, or `json`. Default is `xml`.",
+            "schema": {
+              "default": "xml",
+              "type": "string",
+              "enum": [
+                "xml",
+                "json"
+              ],
+              "description": "The format to return: either `xml`, or `json`. Default is `xml`."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Results returned",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "MissingTokenError": {
+                    "summary": "No Api-Key header",
+                    "description": "The header may be missing or its name contains a typo error",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "required",
+                          "location": "header",
+                          "name": "Api-Key",
+                          "message": "Missing Api-Key header"
+                        }
+                      ]
+                    }
+                  },
+                  "InvalidTokenError": {
+                    "summary": "Invalid key in Api-Key header",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "invalid",
+                          "location": "header",
+                          "name": "Api-Key",
+                          "message": "Invalid Api-Key header"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error. Consumer may try to send the request again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "UnexpectedError": {
+                    "summary": "An unexpected error",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "unexpected",
+                          "message": "An expected error occurred, you may try again later"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/teilex0/project": {
+      "get": {
+        "summary": "Get detailed information about current project",
+        "operationId": "lapi:project",
+        "tags": [
+          "info"
+        ],
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "description": "The format to return: either `xml`, or `json`. Default is `xml`.",
+            "schema": {
+              "default": "xml",
+              "type": "string",
+              "enum": [
+                "xml",
+                "json"
+              ],
+              "description": "The format to return: either `xml`, or `json`. Default is `xml`."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Results returned",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "MissingTokenError": {
+                    "summary": "No Api-Key header",
+                    "description": "The header may be missing or its name contains a typo error",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "required",
+                          "location": "header",
+                          "name": "Api-Key",
+                          "message": "Missing Api-Key header"
+                        }
+                      ]
+                    }
+                  },
+                  "InvalidTokenError": {
+                    "summary": "Invalid key in Api-Key header",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "invalid",
+                          "location": "header",
+                          "name": "Api-Key",
+                          "message": "Invalid Api-Key header"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error. Consumer may try to send the request again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "UnexpectedError": {
+                    "summary": "An unexpected error",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "unexpected",
+                          "message": "An expected error occurred, you may try again later"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/teilex0/contents": {
+      "get": {
+        "summary": "Shows contents of a dictionary",
+        "operationId": "lapi:contents",
+        "tags": [
+          "browse"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Identifier for a dictionary. Value of an `@xml:id` attribute of the `<TEI>` element.",
+            "schema": {
+              "description": "A unique and human readable id",
+              "type": "string",
+              "pattern": "[a-zA-Z0-9-.]*",
+              "minLength": 4,
+              "maxLength": 80
+            },
+            "example": "FACS"
+          },
+          {
+            "name": "chapter",
+            "in": "query",
+            "description": "Chapter of the dictionary containing entries. Usual a div with one leter. Use value of `@n` attribute of div or textual content of `<head>` element to identify chapter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "The format to return: either `html`, or `xml`. Default is `html`.",
+            "schema": {
+              "default": "html",
+              "type": "string",
+              "enum": [
+                "html",
+                "xml"
+              ],
+              "description": "The format to return: either `html`, or `xml`. Default is `html`."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Results returned",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "MissingTokenError": {
+                    "summary": "No Api-Key header",
+                    "description": "The header may be missing or its name contains a typo error",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "required",
+                          "location": "header",
+                          "name": "Api-Key",
+                          "message": "Missing Api-Key header"
+                        }
+                      ]
+                    }
+                  },
+                  "InvalidTokenError": {
+                    "summary": "Invalid key in Api-Key header",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "invalid",
+                          "location": "header",
+                          "name": "Api-Key",
+                          "message": "Invalid Api-Key header"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No dictionary found for provided `id`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "DictionaryNotFoundErrorExample": {
+                    "summary": "Invalid id",
+                    "value": {
+                      "errors": {
+                        "code": "invalid",
+                        "location": "path",
+                        "name": "id",
+                        "message": "Unknown id (of the dictionary)"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error. Consumer may try to send the request again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "UnexpectedError": {
+                    "summary": "An unexpected error",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "unexpected",
+                          "message": "An expected error occurred, you may try again later"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/teilex0/browse": {
+      "get": {
+        "summary": "Browse through TEI Publisher collections",
+        "operationId": "lapi:browse",
+        "tags": [
+          "browse"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Identifier for a dictionary. Value of an `@xml:id` attribute of the `<TEI>` element.",
+            "schema": {
+              "description": "A unique and human readable id",
+              "type": "string",
+              "pattern": "[a-zA-Z0-9-.]*",
+              "minLength": 4,
+              "maxLength": 80
+            },
+            "example": "FACS"
+          },
+          {
+            "name": "chapter",
+            "in": "query",
+            "description": "Chapter of the dictionary containing entries. Usual a div with one leter. Use value of `@n` attribute of div or textual content of `<head>` element to identify chapter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "field",
+            "in": "query",
+            "description": "The field to query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "lemma",
+                "entry"
+              ],
+              "default": "lemma",
+              "description": "Parts of the entry to be returned."
+            }
+          },
+          {
+            "name": "position",
+            "in": "query",
+            "description": "Position of the search string in the query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "exactly",
+                "start",
+                "end",
+                "everywhere"
+              ],
+              "description": "The position of the text in searched query. Default is `exactly`."
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Start offset of the first item to show from the result set",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "per-page",
+            "in": "query",
+            "description": "Number of items to show on one page",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "highlight",
+            "in": "query",
+            "description": "If true found text will be highlighted",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "entry-parts",
+            "in": "query",
+            "description": "Parts of the entry to be returned.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "enum": [
+                "lemma",
+                "grammar",
+                "definition",
+                "attestation",
+                "translation",
+                "etymology"
+              ],
+              "default": "",
+              "description": "Parts of the entry to be returned. Order of the parts in the source document is preserved."
+            },
+            "style": "form",
+            "explode": true
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "The format to return: either `html`, or `xml`. Default is `html`.",
+            "schema": {
+              "default": "html",
+              "type": "string",
+              "enum": [
+                "html",
+                "xml"
+              ],
+              "description": "The format to return: either `html`, or `xml`. Default is `html`."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Results returned",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "MissingTokenError": {
+                    "summary": "No Api-Key header",
+                    "description": "The header may be missing or its name contains a typo error",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "required",
+                          "location": "header",
+                          "name": "Api-Key",
+                          "message": "Missing Api-Key header"
+                        }
+                      ]
+                    }
+                  },
+                  "InvalidTokenError": {
+                    "summary": "Invalid key in Api-Key header",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "invalid",
+                          "location": "header",
+                          "name": "Api-Key",
+                          "message": "Invalid Api-Key header"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No dictionary found for provided `id` (of the dictionary) or an entry for provided `entry-id`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "DictionaryNotFoundErrorExample": {
+                    "summary": "Invalid id",
+                    "value": {
+                      "errors": {
+                        "code": "invalid",
+                        "location": "path",
+                        "name": "id",
+                        "message": "Unknown id (of the dictionary)"
+                      }
+                    }
+                  },
+                  "EntryNotFoundErrorExample": {
+                    "summary": "Invalid entry-id",
+                    "value": {
+                      "errors": {
+                        "code": "invalid",
+                        "location": "path",
+                        "name": "entry-id",
+                        "message": "Unknown entry-id"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error. Consumer may try to send the request again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "UnexpectedError": {
+                    "summary": "An unexpected error",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "unexpected",
+                          "message": "An expected error occurred, you may try again later"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/teilex0/search": {
+      "get": {
+        "summary": "Run a search on all TEI Publisher collections",
+        "operationId": "lapi:search",
+        "tags": [
+          "search"
+        ],
+        "parameters": [
+          {
+            "name": "ids",
+            "in": "query",
+            "description": "Array of identifiers for a dictionary. Value of an `@xml:id` attribute of the `<TEI>` element.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "nullable": true
+            }
+          },
+          {
+            "name": "field[1]",
+            "in": "query",
+            "description": "The field to query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "pronunciation",
+                "partOfSpeechAll",
+                "domain",
+                "lemma",
+                "reversal",
+                "all"
+              ],
+              "description": "Parts of the entry to be returned."
+            }
+          },
+          {
+            "name": "field[2]",
+            "in": "query",
+            "description": "The field to query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "pronunciation",
+                "partOfSpeechAll",
+                "domain",
+                "lemma",
+                "reversal",
+                "all"
+              ],
+              "description": "Parts of the entry to be returned."
+            }
+          },
+          {
+            "name": "field[3]",
+            "in": "query",
+            "description": "The field to query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "pronunciation",
+                "partOfSpeechAll",
+                "domain",
+                "lemma",
+                "reversal",
+                "all"
+              ],
+              "description": "Parts of the entry to be returned."
+            }
+          },
+          {
+            "name": "query-advanced[1]",
+            "in": "query",
+            "description": "The query itself",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "query-advanced[2]",
+            "in": "query",
+            "description": "The query itself",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "query-advanced[3]",
+            "in": "query",
+            "description": "The query itself",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "position[1]",
+            "in": "query",
+            "description": "The position of the text within the query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "exactly",
+                "start",
+                "end",
+                "everywhere"
+              ],
+              "description": "The position of the text in searched query. Default is `exactly`."
+            }
+          },
+          {
+            "name": "position[2]",
+            "in": "query",
+            "description": "The position of the text within the query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "exactly",
+                "start",
+                "end",
+                "everywhere"
+              ],
+              "description": "The position of the text in searched query. Default is `exactly`."
+            }
+          },
+          {
+            "name": "position[3]",
+            "in": "query",
+            "description": "The position of the text within the query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "exactly",
+                "start",
+                "end",
+                "everywhere"
+              ],
+              "description": "The position of the text in searched query. Default is `exactly`."
+            }
+          },
+          {
+            "name": "condition[1]",
+            "in": "query",
+            "description": "The condition between two filters",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "and",
+                "not",
+                "andNot"
+              ],
+              "description": "The condition between two parts of the query. Default is `and`."
+            }
+          },
+          {
+            "name": "condition[2]",
+            "in": "query",
+            "description": "The condition between two filters",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "and",
+                "not",
+                "andNot"
+              ],
+              "description": "The condition between two parts of the query. Default is `and`."
+            }
+          },
+          {
+            "name": "condition[3]",
+            "in": "query",
+            "description": "The condition between two filters",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "and",
+                "not",
+                "andNot"
+              ],
+              "description": "The condition between two parts of the query. Default is `and`."
+            }
+          },
+          {
+            "name": "facet",
+            "in": "query",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "dictionary": {
+                  "type": "string"
+                },
+                "polysemy": {
+                  "type": "string"
+                },
+                "entry-type": {
+                  "type": "string"
+                },
+                "attitude": {
+                  "type": "string"
+                },
+                "domain": {
+                  "type": "string"
+                },
+                "frequency": {
+                  "type": "string"
+                },
+                "geographic": {
+                  "type": "string"
+                },
+                "hint": {
+                  "type": "string"
+                },
+                "meaningType": {
+                  "type": "string"
+                },
+                "normativity": {
+                  "type": "string"
+                },
+                "socioCultural": {
+                  "type": "string"
+                },
+                "textType": {
+                  "type": "string"
+                },
+                "time": {
+                  "type": "string"
+                },
+                "attestation": {
+                  "type": "string"
+                },
+                "attestation-author": {
+                  "type": "string"
+                },
+                "attestation-title": {
+                  "type": "string"
+                },
+                "metamark": {
+                  "type": "string"
+                }
+              }
+            },
+            "style": "deepObject",
+            "explode": true,
+            "required": false
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "description": "Query string",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "field",
+            "in": "query",
+            "description": "The field to query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "lemma",
+                "entry"
+              ],
+              "default": "lemma",
+              "description": "Parts of the entry to be returned."
+            }
+          },
+          {
+            "name": "position",
+            "in": "query",
+            "description": "Position of the search string in the query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "exactly",
+                "start",
+                "end",
+                "everywhere"
+              ],
+              "description": "The position of the text in searched query. Default is `exactly`."
+            }
+          },
+          {
+            "name": "entry-parts",
+            "in": "query",
+            "description": "Parts of the entry to be returned.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "enum": [
+                "lemma",
+                "grammar",
+                "definition",
+                "attestation",
+                "translation",
+                "etymology"
+              ],
+              "default": "",
+              "description": "Parts of the entry to be returned. Order of the parts in the source document is preserved."
+            },
+            "style": "form",
+            "explode": true
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Start offset of the first item to show from the result set",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "per-page",
+            "in": "query",
+            "description": "Number of items to show on one page",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "highlight",
+            "in": "query",
+            "description": "If true found text will be highlighted",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "The format to return: either `html`, or `xml`. Default is `html`.",
+            "schema": {
+              "default": "html",
+              "type": "string",
+              "enum": [
+                "html",
+                "xml"
+              ],
+              "description": "The format to return: either `html`, or `xml`. Default is `html`."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Results returned",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "MissingTokenError": {
+                    "summary": "No Api-Key header",
+                    "description": "The header may be missing or its name contains a typo error",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "required",
+                          "location": "header",
+                          "name": "Api-Key",
+                          "message": "Missing Api-Key header"
+                        }
+                      ]
+                    }
+                  },
+                  "InvalidTokenError": {
+                    "summary": "Invalid key in Api-Key header",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "invalid",
+                          "location": "header",
+                          "name": "Api-Key",
+                          "message": "Invalid Api-Key header"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error. Consumer may try to send the request again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "UnexpectedError": {
+                    "summary": "An unexpected error",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "unexpected",
+                          "message": "An expected error occurred, you may try again later"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/teilex0/search/facets": {
+      "get": {
+        "summary": "List facets",
+        "description": "Return a list of facet counts for current search results",
+        "operationId": "lapi:facets",
+        "tags": [
+          "search"
+        ],
+        "parameters": [
+          {
+            "name": "ids",
+            "in": "query",
+            "description": "Array of identifiers for a dictionary. Value of an `@xml:id` attribute of the `<TEI>` element.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "nullable": true
+            }
+          },
+          {
+            "name": "field[1]",
+            "in": "query",
+            "description": "The field to query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "pronunciation",
+                "partOfSpeechAll",
+                "domain",
+                "lemma",
+                "reversal",
+                "all"
+              ],
+              "description": "Parts of the entry to be returned."
+            }
+          },
+          {
+            "name": "field[2]",
+            "in": "query",
+            "description": "The field to query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "pronunciation",
+                "partOfSpeechAll",
+                "domain",
+                "lemma",
+                "reversal",
+                "all"
+              ],
+              "description": "Parts of the entry to be returned."
+            }
+          },
+          {
+            "name": "field[3]",
+            "in": "query",
+            "description": "The field to query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "pronunciation",
+                "partOfSpeechAll",
+                "domain",
+                "lemma",
+                "reversal",
+                "all"
+              ],
+              "description": "Parts of the entry to be returned."
+            }
+          },
+          {
+            "name": "query-advanced[1]",
+            "in": "query",
+            "description": "The query itself",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "query-advanced[2]",
+            "in": "query",
+            "description": "The query itself",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "query-advanced[3]",
+            "in": "query",
+            "description": "The query itself",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "position[1]",
+            "in": "query",
+            "description": "The position of the text within the query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "exactly",
+                "start",
+                "end",
+                "everywhere"
+              ],
+              "description": "The position of the text in searched query. Default is `exactly`."
+            }
+          },
+          {
+            "name": "position[2]",
+            "in": "query",
+            "description": "The position of the text within the query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "exactly",
+                "start",
+                "end",
+                "everywhere"
+              ],
+              "description": "The position of the text in searched query. Default is `exactly`."
+            }
+          },
+          {
+            "name": "position[3]",
+            "in": "query",
+            "description": "The position of the text within the query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "exactly",
+                "start",
+                "end",
+                "everywhere"
+              ],
+              "description": "The position of the text in searched query. Default is `exactly`."
+            }
+          },
+          {
+            "name": "condition[1]",
+            "in": "query",
+            "description": "The condition between two filters",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "and",
+                "not",
+                "andNot"
+              ],
+              "description": "The condition between two parts of the query. Default is `and`."
+            }
+          },
+          {
+            "name": "condition[2]",
+            "in": "query",
+            "description": "The condition between two filters",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "and",
+                "not",
+                "andNot"
+              ],
+              "description": "The condition between two parts of the query. Default is `and`."
+            }
+          },
+          {
+            "name": "condition[3]",
+            "in": "query",
+            "description": "The condition between two filters",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "and",
+                "not",
+                "andNot"
+              ],
+              "description": "The condition between two parts of the query. Default is `and`."
+            }
+          },
+          {
+            "name": "facet",
+            "in": "query",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "dictionary": {
+                  "type": "string"
+                },
+                "polysemy": {
+                  "type": "string"
+                },
+                "entry-type": {
+                  "type": "string"
+                },
+                "attitude": {
+                  "type": "string"
+                },
+                "domain": {
+                  "type": "string"
+                },
+                "frequency": {
+                  "type": "string"
+                },
+                "geographic": {
+                  "type": "string"
+                },
+                "hint": {
+                  "type": "string"
+                },
+                "meaningType": {
+                  "type": "string"
+                },
+                "normativity": {
+                  "type": "string"
+                },
+                "socioCultural": {
+                  "type": "string"
+                },
+                "textType": {
+                  "type": "string"
+                },
+                "time": {
+                  "type": "string"
+                },
+                "attestation": {
+                  "type": "string"
+                },
+                "attestation-author": {
+                  "type": "string"
+                },
+                "attestation-title": {
+                  "type": "string"
+                },
+                "metamark": {
+                  "type": "string"
+                }
+              }
+            },
+            "style": "deepObject",
+            "explode": true,
+            "required": false
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "description": "Query string",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "field",
+            "in": "query",
+            "description": "The field to query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "lemma",
+                "entry"
+              ],
+              "default": "lemma",
+              "description": "Parts of the entry to be returned."
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "The format to return: either `html`, or `xml`. Default is `html`.",
+            "schema": {
+              "default": "html",
+              "type": "string",
+              "enum": [
+                "html",
+                "xml"
+              ],
+              "description": "The format to return: either `html`, or `xml`. Default is `html`."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Results returned",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "MissingTokenError": {
+                    "summary": "No Api-Key header",
+                    "description": "The header may be missing or its name contains a typo error",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "required",
+                          "location": "header",
+                          "name": "Api-Key",
+                          "message": "Missing Api-Key header"
+                        }
+                      ]
+                    }
+                  },
+                  "InvalidTokenError": {
+                    "summary": "Invalid key in Api-Key header",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "invalid",
+                          "location": "header",
+                          "name": "Api-Key",
+                          "message": "Invalid Api-Key header"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error. Consumer may try to send the request again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "UnexpectedError": {
+                    "summary": "An unexpected error",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "unexpected",
+                          "message": "An expected error occurred, you may try again later"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/teilex0/search/autocomplete": {
+      "get": {
+        "summary": "List possible completions",
+        "description": "Return a list of possible completions for the given search term",
+        "operationId": "lapi:autocomplete",
+        "tags": [
+          "search"
+        ],
+        "parameters": [
+          {
+            "name": "ids",
+            "in": "query",
+            "description": "Array of identifiers for a dictionary. Value of an `@xml:id` attribute of the `<TEI>` element.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "nullable": true
+            }
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "description": "The prefix to expand",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "field",
+            "in": "query",
+            "description": "The field to query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "pronunciation",
+                "partOfSpeechAll",
+                "domain",
+                "lemma",
+                "reversal",
+                "all"
+              ],
+              "description": "Parts of the entry to be returned."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of possible completions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "text": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "MissingTokenError": {
+                    "summary": "No Api-Key header",
+                    "description": "The header may be missing or its name contains a typo error",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "required",
+                          "location": "header",
+                          "name": "Api-Key",
+                          "message": "Missing Api-Key header"
+                        }
+                      ]
+                    }
+                  },
+                  "InvalidTokenError": {
+                    "summary": "Invalid key in Api-Key header",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "invalid",
+                          "location": "header",
+                          "name": "Api-Key",
+                          "message": "Invalid Api-Key header"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error. Consumer may try to send the request again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "UnexpectedError": {
+                    "summary": "An unexpected error",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "unexpected",
+                          "message": "An expected error occurred, you may try again later"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/teilex0/dictionaries": {
+      "get": {
+        "summary": "Browse through collection of dictionaries",
+        "operationId": "lapi:dictionaries",
+        "tags": [
+          "browse"
+        ],
+        "parameters": [
+          {
+            "name": "dictionary-parts",
+            "in": "query",
+            "description": "Parts of the dictionary to be returned.",
+            "schema": {
+              "default": "",
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "enum": [
+                "header",
+                "text",
+                "front",
+                "body",
+                "back"
+              ],
+              "description": "Parts of the dictionary to be returned. Order of the parts in the source document is preserved."
+            }
+          },
+          {
+            "name": "entry-parts",
+            "in": "query",
+            "description": "Parts of the entry to be returned.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "enum": [
+                "lemma",
+                "grammar",
+                "definition",
+                "attestation",
+                "translation",
+                "etymology"
+              ],
+              "default": "",
+              "description": "Parts of the entry to be returned. Order of the parts in the source document is preserved."
+            },
+            "style": "form",
+            "explode": true
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Start offset of the first item to show from the result set",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "per-page",
+            "in": "query",
+            "description": "Number of items to show on one page",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "The format to return: either `html`, or `xml`. Default is `html`.",
+            "schema": {
+              "default": "html",
+              "type": "string",
+              "enum": [
+                "html",
+                "xml"
+              ],
+              "description": "The format to return: either `html`, or `xml`. Default is `html`."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Results returned",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "MissingTokenError": {
+                    "summary": "No Api-Key header",
+                    "description": "The header may be missing or its name contains a typo error",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "required",
+                          "location": "header",
+                          "name": "Api-Key",
+                          "message": "Missing Api-Key header"
+                        }
+                      ]
+                    }
+                  },
+                  "InvalidTokenError": {
+                    "summary": "Invalid key in Api-Key header",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "invalid",
+                          "location": "header",
+                          "name": "Api-Key",
+                          "message": "Invalid Api-Key header"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error. Consumer may try to send the request again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "UnexpectedError": {
+                    "summary": "An unexpected error",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "unexpected",
+                          "message": "An expected error occurred, you may try again later"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/teilex0/dictionaries/{id}/contents": {
+      "get": {
+        "summary": "Shows contents of a dictionary",
+        "operationId": "lapi:dictionary-contents",
+        "tags": [
+          "browse"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identifier for a dictionary. Value of an `@xml:id` attribute of the `<TEI>` element.",
+            "required": true,
+            "schema": {
+              "description": "A unique and human readable id",
+              "type": "string",
+              "pattern": "[a-zA-Z0-9-.]*",
+              "minLength": 4,
+              "maxLength": 80
+            },
+            "example": "FACS"
+          },
+          {
+            "name": "chapter",
+            "in": "query",
+            "description": "Chapter of the dictionary containing entries. Usual a div with one leter. Use value of `@n` attribute of div or textual content of `<head>` element to identify chapter",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "The format to return: either `html`, or `xml`. Default is `html`.",
+            "schema": {
+              "default": "html",
+              "type": "string",
+              "enum": [
+                "html",
+                "xml"
+              ],
+              "description": "The format to return: either `html`, or `xml`. Default is `html`."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Results returned",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "MissingTokenError": {
+                    "summary": "No Api-Key header",
+                    "description": "The header may be missing or its name contains a typo error",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "required",
+                          "location": "header",
+                          "name": "Api-Key",
+                          "message": "Missing Api-Key header"
+                        }
+                      ]
+                    }
+                  },
+                  "InvalidTokenError": {
+                    "summary": "Invalid key in Api-Key header",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "invalid",
+                          "location": "header",
+                          "name": "Api-Key",
+                          "message": "Invalid Api-Key header"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No dictionary found for provided `id`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "DictionaryNotFoundErrorExample": {
+                    "summary": "Invalid id",
+                    "value": {
+                      "errors": {
+                        "code": "invalid",
+                        "location": "path",
+                        "name": "id",
+                        "message": "Unknown id (of the dictionary)"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error. Consumer may try to send the request again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "UnexpectedError": {
+                    "summary": "An unexpected error",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "unexpected",
+                          "message": "An expected error occurred, you may try again later"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/teilex0/dictionaries/{id}/entries": {
+      "get": {
+        "summary": "Browse through collection of entries within a dictionary",
+        "operationId": "lapi:dictionary-entries",
+        "tags": [
+          "browse"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identifier for a dictionary. Value of an `@xml:id` attribute of the `<TEI>` element.",
+            "required": true,
+            "schema": {
+              "description": "A unique and human readable id",
+              "type": "string",
+              "pattern": "[a-zA-Z0-9-.]*",
+              "minLength": 4,
+              "maxLength": 80
+            },
+            "example": "FACS"
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "The format to return: either `html`, or `xml`. Default is `html`.",
+            "schema": {
+              "default": "html",
+              "type": "string",
+              "enum": [
+                "html",
+                "xml"
+              ],
+              "description": "The format to return: either `html`, or `xml`. Default is `html`."
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Start offset of the first item to show from the result set",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "per-page",
+            "in": "query",
+            "description": "Number of items to show on one page",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Results returned",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "MissingTokenError": {
+                    "summary": "No Api-Key header",
+                    "description": "The header may be missing or its name contains a typo error",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "required",
+                          "location": "header",
+                          "name": "Api-Key",
+                          "message": "Missing Api-Key header"
+                        }
+                      ]
+                    }
+                  },
+                  "InvalidTokenError": {
+                    "summary": "Invalid key in Api-Key header",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "invalid",
+                          "location": "header",
+                          "name": "Api-Key",
+                          "message": "Invalid Api-Key header"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No dictionary found for provided `id`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "DictionaryNotFoundErrorExample": {
+                    "summary": "Invalid id",
+                    "value": {
+                      "errors": {
+                        "code": "invalid",
+                        "location": "path",
+                        "name": "id",
+                        "message": "Unknown id (of the dictionary)"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error. Consumer may try to send the request again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "UnexpectedError": {
+                    "summary": "An unexpected error",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "unexpected",
+                          "message": "An expected error occurred, you may try again later"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/teilex0/dictionaries/{id}/entries/{entry-id}": {
+      "get": {
+        "summary": "Get dictionary entry",
+        "operationId": "lapi:dictionary-entry",
+        "tags": [
+          "view"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identifier for a dictionary. Value of an `@xml:id` attribute of the `<TEI>` element.",
+            "required": true,
+            "schema": {
+              "description": "A unique and human readable id",
+              "type": "string",
+              "pattern": "[a-zA-Z0-9-.]*",
+              "minLength": 4,
+              "maxLength": 80
+            },
+            "example": "FACS"
+          },
+          {
+            "name": "entry-id",
+            "in": "path",
+            "description": "Identifier for an entry within an dictionary. Value of an `@xml:id` attribute of the `<entry>` element.",
+            "required": true,
+            "schema": {
+              "description": "A unique and human readable id",
+              "type": "string",
+              "pattern": "[a-zA-Z0-9-.]*",
+              "minLength": 4,
+              "maxLength": 80
+            },
+            "example": "FACS.10a157e1-0968-4b68-9bc1-b1fca0eccadc"
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "The format to return: either `html`, or `xml`. Default is `html`.",
+            "schema": {
+              "default": "html",
+              "type": "string",
+              "enum": [
+                "html",
+                "xml"
+              ],
+              "description": "The format to return: either `html`, or `xml`. Default is `html`."
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Start offset of the first item to show from the result set",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "per-page",
+            "in": "query",
+            "description": "Number of items to show on one page",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Results returned",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "MissingTokenError": {
+                    "summary": "No Api-Key header",
+                    "description": "The header may be missing or its name contains a typo error",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "required",
+                          "location": "header",
+                          "name": "Api-Key",
+                          "message": "Missing Api-Key header"
+                        }
+                      ]
+                    }
+                  },
+                  "InvalidTokenError": {
+                    "summary": "Invalid key in Api-Key header",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "invalid",
+                          "location": "header",
+                          "name": "Api-Key",
+                          "message": "Invalid Api-Key header"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No dictionary found for provided `id` (of the dictionary) or an entry for provided `entry-id`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "DictionaryNotFoundErrorExample": {
+                    "summary": "Invalid id",
+                    "value": {
+                      "errors": {
+                        "code": "invalid",
+                        "location": "path",
+                        "name": "id",
+                        "message": "Unknown id (of the dictionary)"
+                      }
+                    }
+                  },
+                  "EntryNotFoundErrorExample": {
+                    "summary": "Invalid entry-id",
+                    "value": {
+                      "errors": {
+                        "code": "invalid",
+                        "location": "path",
+                        "name": "entry-id",
+                        "message": "Unknown entry-id"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error. Consumer may try to send the request again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "UnexpectedError": {
+                    "summary": "An unexpected error",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "unexpected",
+                          "message": "An expected error occurred, you may try again later"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/teilex0/domains": {
+      "get": {
+        "summary": "List domains, semantic categories",
+        "description": "Retrieve list of semantic categories in format required by pb-split-list",
+        "operationId": "lapi:domains",
+        "tags": [
+          "search"
+        ],
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "xml",
+                "html",
+                "json"
+              ],
+              "description": "The format to return: either `json`, `html`, or `xml`. The first one returns a JSON record with additional information."
+            },
+            "description": "The format to return: either `json`, `html`, or `xml`. The first returns a JSON record with additional information."
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "description": "Query string, identifier or description",
+            "schema": {
+              "type": "string",
+              "example": "food"
+            }
+          },
+          {
+            "name": "idno",
+            "in": "query",
+            "description": "Category id",
+            "schema": {
+              "type": "string",
+              "example": "1.6.2"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Maximum number of returned items. If 0, all items are returned.",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Semantic categories to process or display",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "categories": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "category": {
+                            "type": "string"
+                          },
+                          "count": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "MissingTokenError": {
+                    "summary": "No Api-Key header",
+                    "description": "The header may be missing or its name contains a typo error",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "required",
+                          "location": "header",
+                          "name": "Api-Key",
+                          "message": "Missing Api-Key header"
+                        }
+                      ]
+                    }
+                  },
+                  "InvalidTokenError": {
+                    "summary": "Invalid key in Api-Key header",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "invalid",
+                          "location": "header",
+                          "name": "Api-Key",
+                          "message": "Invalid Api-Key header"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error. Consumer may try to send the request again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "errors"
+                  ],
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "title": "ErrorSource",
+                            "required": [
+                              "location",
+                              "name"
+                            ],
+                            "properties": {
+                              "location": {
+                                "type": "string",
+                                "enum": [
+                                  "path",
+                                  "query",
+                                  "body",
+                                  "header"
+                                ]
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the property or parameter causing the error"
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "JSON path targeting the source of error (only used when location is `body`)"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "UnexpectedError": {
+                    "summary": "An unexpected error",
+                    "value": {
+                      "errors": [
+                        {
+                          "code": "unexpected",
+                          "message": "An expected error occurred, you may try again later"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      },
+      "cookieAuth": {
+        "type": "apiKey",
+        "name": "teipublisher.com.login",
+        "in": "cookie"
+      }
+    },
+    "schemas": {
+      "XmlId": {
+        "description": "A unique and human readable id",
+        "type": "string",
+        "pattern": "[a-zA-Z0-9-.]*",
+        "minLength": 4,
+        "maxLength": 80
+      },
+      "Query": {
+        "type": "object",
+        "properties": {
+          "phrase": {
+            "type": "string"
+          },
+          "term": {
+            "type": "string"
+          },
+          "wildcard": {
+            "type": "string"
+          }
+        }
+      },
+      "Completions": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "QueryOptions": {
+        "type": "object",
+        "properties": {
+          "default-operator": {
+            "type": "string",
+            "enum": [
+              "and",
+              "or"
+            ],
+            "default": [
+              "and"
+            ]
+          },
+          "phrase-slop": {
+            "type": "integer",
+            "default": 1
+          },
+          "leading-wildcard": {
+            "type": "string",
+            "enum": [
+              "yes",
+              "no"
+            ]
+          },
+          "filter-rewrite": {
+            "type": "string",
+            "enum": [
+              "yes",
+              "no"
+            ]
+          }
+        }
+      },
+      "String": {
+        "type": "string"
+      },
+      "StringArray": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "nullable": true
+      },
+      "DictionaryParts": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "enum": [
+          "header",
+          "text",
+          "front",
+          "body",
+          "back"
+        ],
+        "default": "header",
+        "description": "Parts of the dictionary to be returned. Order of the parts in the source document is preserved."
+      },
+      "DictionaryPartsArray": {
+        "type": "array",
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "enum": [
+            "header",
+            "text",
+            "front",
+            "body",
+            "back"
+          ],
+          "default": "header",
+          "description": "Parts of the dictionary to be returned. Order of the parts in the source document is preserved."
+        }
+      },
+      "EntryParts": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "enum": [
+          "lemma",
+          "grammar",
+          "definition",
+          "attestation",
+          "translation",
+          "etymology"
+        ],
+        "default": "",
+        "description": "Parts of the entry to be returned. Order of the parts in the source document is preserved."
+      },
+      "SimpleSearchField": {
+        "type": "string",
+        "enum": [
+          "lemma",
+          "entry"
+        ],
+        "default": "lemma",
+        "description": "Parts of the entry to be returned."
+      },
+      "AdvancedSearchField": {
+        "type": "string",
+        "enum": [
+          "pronunciation",
+          "partOfSpeechAll",
+          "domain",
+          "lemma",
+          "reversal",
+          "all"
+        ],
+        "description": "Parts of the entry to be returned."
+      },
+      "AdvancedSearchFieldArray": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "pronunciation",
+            "partOfSpeechAll",
+            "domain",
+            "lemma",
+            "reversal",
+            "all"
+          ],
+          "description": "Parts of the entry to be returned."
+        }
+      },
+      "QueryPosition": {
+        "type": "string",
+        "enum": [
+          "exactly",
+          "start",
+          "end",
+          "everywhere"
+        ],
+        "description": "The position of the text in searched query. Default is `exactly`."
+      },
+      "QueryPositionArray": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "exactly",
+            "start",
+            "end",
+            "everywhere"
+          ],
+          "description": "The position of the text in searched query. Default is `exactly`."
+        }
+      },
+      "QueryCondition": {
+        "type": "string",
+        "enum": [
+          "and",
+          "not",
+          "andNot"
+        ],
+        "description": "The condition between two parts of the query. Default is `and`."
+      },
+      "FacetObject": {
+        "type": "object",
+        "properties": {
+          "dictionary": {
+            "type": "string"
+          },
+          "polysemy": {
+            "type": "string"
+          },
+          "entry-type": {
+            "type": "string"
+          },
+          "attitude": {
+            "type": "string"
+          },
+          "domain": {
+            "type": "string"
+          },
+          "frequency": {
+            "type": "string"
+          },
+          "geographic": {
+            "type": "string"
+          },
+          "hint": {
+            "type": "string"
+          },
+          "meaningType": {
+            "type": "string"
+          },
+          "normativity": {
+            "type": "string"
+          },
+          "socioCultural": {
+            "type": "string"
+          },
+          "textType": {
+            "type": "string"
+          },
+          "time": {
+            "type": "string"
+          },
+          "attestation": {
+            "type": "string"
+          },
+          "attestation-author": {
+            "type": "string"
+          },
+          "attestation-title": {
+            "type": "string"
+          },
+          "metamark": {
+            "type": "string"
+          }
+        }
+      },
+      "FacetObjectArray": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "dictionary": {
+              "type": "string"
+            },
+            "polysemy": {
+              "type": "string"
+            },
+            "entry-type": {
+              "type": "string"
+            },
+            "attitude": {
+              "type": "string"
+            },
+            "domain": {
+              "type": "string"
+            },
+            "frequency": {
+              "type": "string"
+            },
+            "geographic": {
+              "type": "string"
+            },
+            "hint": {
+              "type": "string"
+            },
+            "meaningType": {
+              "type": "string"
+            },
+            "normativity": {
+              "type": "string"
+            },
+            "socioCultural": {
+              "type": "string"
+            },
+            "textType": {
+              "type": "string"
+            },
+            "time": {
+              "type": "string"
+            },
+            "attestation": {
+              "type": "string"
+            },
+            "attestation-author": {
+              "type": "string"
+            },
+            "attestation-title": {
+              "type": "string"
+            },
+            "metamark": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "OutputFormat": {
+        "type": "string",
+        "enum": [
+          "html",
+          "xml"
+        ],
+        "default": "html",
+        "description": "The format to return: either `html`, or `xml`. Default is `html`."
+      },
+      "OutputFormatXmlJson": {
+        "type": "string",
+        "enum": [
+          "xml",
+          "json"
+        ],
+        "default": "xml",
+        "description": "The format to return: either `xml`, or `json`. Default is `xml`."
+      },
+      "OutputFormatXmlHtmlJson": {
+        "type": "string",
+        "enum": [
+          "xml",
+          "html",
+          "json"
+        ],
+        "description": "The format to return: either `json`, `html`, or `xml`. The first one returns a JSON record with additional information."
+      },
+      "Errors": {
+        "required": [
+          "errors"
+        ],
+        "properties": {
+          "errors": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "required": [
+                "code",
+                "message"
+              ],
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "source": {
+                  "title": "ErrorSource",
+                  "required": [
+                    "location",
+                    "name"
+                  ],
+                  "properties": {
+                    "location": {
+                      "type": "string",
+                      "enum": [
+                        "path",
+                        "query",
+                        "body",
+                        "header"
+                      ]
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the property or parameter causing the error"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "JSON path targeting the source of error (only used when location is `body`)"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "DictionaryIdParameter": {
+        "name": "id",
+        "in": "path",
+        "description": "Identifier for a dictionary. Value of an `@xml:id` attribute of the `<TEI>` element.",
+        "required": true,
+        "schema": {
+          "description": "A unique and human readable id",
+          "type": "string",
+          "pattern": "[a-zA-Z0-9-.]*",
+          "minLength": 4,
+          "maxLength": 80
+        },
+        "example": "FACS"
+      },
+      "DictionaryIdQueryParameter": {
+        "name": "id",
+        "in": "query",
+        "description": "Identifier for a dictionary. Value of an `@xml:id` attribute of the `<TEI>` element.",
+        "schema": {
+          "description": "A unique and human readable id",
+          "type": "string",
+          "pattern": "[a-zA-Z0-9-.]*",
+          "minLength": 4,
+          "maxLength": 80
+        },
+        "example": "FACS"
+      },
+      "DictionaryIdsParameter": {
+        "name": "ids",
+        "in": "query",
+        "description": "Array of identifiers for a dictionary. Value of an `@xml:id` attribute of the `<TEI>` element.",
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "nullable": true
+        }
+      },
+      "EntryIdParameter": {
+        "name": "entry-id",
+        "in": "path",
+        "description": "Identifier for an entry within an dictionary. Value of an `@xml:id` attribute of the `<entry>` element.",
+        "required": true,
+        "schema": {
+          "description": "A unique and human readable id",
+          "type": "string",
+          "pattern": "[a-zA-Z0-9-.]*",
+          "minLength": 4,
+          "maxLength": 80
+        },
+        "example": "FACS.10a157e1-0968-4b68-9bc1-b1fca0eccadc"
+      },
+      "SenseIdParameter": {
+        "name": "sense-id",
+        "in": "path",
+        "description": "Identifier for a sense within an dictionary's entry. Value of an `@xml:id` attribute of the `<sense>` element.",
+        "required": true,
+        "schema": {
+          "description": "A unique and human readable id",
+          "type": "string",
+          "pattern": "[a-zA-Z0-9-.]*",
+          "minLength": 4,
+          "maxLength": 80
+        },
+        "example": "FACS.e56ae403-bda4-4ac9-8422-76030b340e85.sense.1"
+      },
+      "DivIdParameter": {
+        "name": "div-id",
+        "in": "query",
+        "description": "Identifier for a division. Value of an `@xml:id` attribute of the `<div>` element.",
+        "schema": {
+          "description": "A unique and human readable id",
+          "type": "string",
+          "pattern": "[a-zA-Z0-9-.]*",
+          "minLength": 4,
+          "maxLength": 80
+        },
+        "example": "language"
+      },
+      "DictionaryPartsParameter": {
+        "name": "dictionary-parts",
+        "in": "query",
+        "description": "Parts of the dictionary to be returned.",
+        "schema": {
+          "default": "",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "enum": [
+            "header",
+            "text",
+            "front",
+            "body",
+            "back"
+          ],
+          "description": "Parts of the dictionary to be returned. Order of the parts in the source document is preserved."
+        }
+      },
+      "EntryPartsParameter": {
+        "name": "entry-parts",
+        "in": "query",
+        "description": "Parts of the entry to be returned.",
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "enum": [
+            "lemma",
+            "grammar",
+            "definition",
+            "attestation",
+            "translation",
+            "etymology"
+          ],
+          "default": "",
+          "description": "Parts of the entry to be returned. Order of the parts in the source document is preserved."
+        },
+        "style": "form",
+        "explode": true
+      },
+      "QueryParameter": {
+        "name": "query",
+        "in": "query",
+        "description": "Query string",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "LanguageParameter": {
+        "name": "language",
+        "in": "query",
+        "description": "Query string",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "QueryAdvancedParameter": {
+        "name": "query-advanced",
+        "in": "query",
+        "description": "Query string",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "QueryAdvancedParameterArray": {
+        "name": "query-advanced",
+        "in": "query",
+        "description": "Query string",
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "nullable": true
+        }
+      },
+      "QueryPrefixParameter": {
+        "name": "query",
+        "in": "query",
+        "description": "The prefix to expand",
+        "schema": {
+          "type": "string"
+        },
+        "required": true
+      },
+      "SimpleSearchFieldParameter": {
+        "name": "field",
+        "in": "query",
+        "description": "The field to query",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "lemma",
+            "entry"
+          ],
+          "default": "lemma",
+          "description": "Parts of the entry to be returned."
+        }
+      },
+      "AdvancedSearchFieldParameter": {
+        "name": "field",
+        "in": "query",
+        "description": "The field to query",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "pronunciation",
+            "partOfSpeechAll",
+            "domain",
+            "lemma",
+            "reversal",
+            "all"
+          ],
+          "description": "Parts of the entry to be returned."
+        }
+      },
+      "FieldParameterArray": {
+        "name": "field",
+        "in": "query",
+        "description": "The field to query",
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "pronunciation",
+              "partOfSpeechAll",
+              "domain",
+              "lemma",
+              "reversal",
+              "all"
+            ],
+            "description": "Parts of the entry to be returned."
+          }
+        }
+      },
+      "PositionParameter": {
+        "name": "position",
+        "in": "query",
+        "description": "Position of the search string in the query",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "exactly",
+            "start",
+            "end",
+            "everywhere"
+          ],
+          "description": "The position of the text in searched query. Default is `exactly`."
+        }
+      },
+      "ParametersParameter": {
+        "name": "parameters",
+        "in": "query",
+        "description": "Parameters from advanced query form",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "StartPageParameter": {
+        "name": "start",
+        "in": "query",
+        "description": "Start offset of the first item to show from the result set",
+        "schema": {
+          "type": "integer",
+          "default": 1
+        }
+      },
+      "ItemsPerPageParameter": {
+        "name": "per-page",
+        "in": "query",
+        "description": "Number of items to show on one page",
+        "schema": {
+          "type": "integer",
+          "default": 20
+        }
+      },
+      "HighlightParameter": {
+        "name": "highlight",
+        "in": "query",
+        "description": "If true found text will be highlighted",
+        "schema": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "ChapterParameter": {
+        "name": "chapter",
+        "in": "query",
+        "description": "Chapter of the dictionary containing entries. Usual a div with one leter. Use value of `@n` attribute of div or textual content of `<head>` element to identify chapter",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "OutputFormatHtmlXmlParameter": {
+        "name": "format",
+        "in": "query",
+        "description": "The format to return: either `html`, or `xml`. Default is `html`.",
+        "schema": {
+          "default": "html",
+          "type": "string",
+          "enum": [
+            "html",
+            "xml"
+          ],
+          "description": "The format to return: either `html`, or `xml`. Default is `html`."
+        }
+      },
+      "OutputFormatXmlJsonParameter": {
+        "name": "format",
+        "in": "query",
+        "description": "The format to return: either `xml`, or `json`. Default is `xml`.",
+        "schema": {
+          "default": "xml",
+          "type": "string",
+          "enum": [
+            "xml",
+            "json"
+          ],
+          "description": "The format to return: either `xml`, or `json`. Default is `xml`."
+        }
+      }
+    },
+    "examples": {
+      "EntryNotFoundErrorExample": {
+        "summary": "Invalid entry-id",
+        "value": {
+          "errors": {
+            "code": "invalid",
+            "location": "path",
+            "name": "entry-id",
+            "message": "Unknown entry-id"
+          }
+        }
+      },
+      "DictionaryNotFoundErrorExample": {
+        "summary": "Invalid id",
+        "value": {
+          "errors": {
+            "code": "invalid",
+            "location": "path",
+            "name": "id",
+            "message": "Unknown id (of the dictionary)"
+          }
+        }
+      }
+    },
+    "responses": {
+      "ResultsReturnedXmlHtml": {
+        "description": "Results returned",
+        "content": {
+          "text/html": {
+            "schema": {
+              "type": "string"
+            }
+          },
+          "application/xml": {
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ResultsReturnedXmlJson": {
+        "description": "Results returned",
+        "content": {
+          "text/html": {
+            "schema": {
+              "type": "string"
+            }
+          },
+          "application/json": {
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "DictionaryNotFoundError": {
+        "description": "No dictionary found for provided `id`",
+        "content": {
+          "application/json": {
+            "schema": {
+              "required": [
+                "errors"
+              ],
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "required": [
+                      "code",
+                      "message"
+                    ],
+                    "properties": {
+                      "code": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "title": "ErrorSource",
+                        "required": [
+                          "location",
+                          "name"
+                        ],
+                        "properties": {
+                          "location": {
+                            "type": "string",
+                            "enum": [
+                              "path",
+                              "query",
+                              "body",
+                              "header"
+                            ]
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "The name of the property or parameter causing the error"
+                          },
+                          "path": {
+                            "type": "string",
+                            "description": "JSON path targeting the source of error (only used when location is `body`)"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "examples": {
+              "DictionaryNotFoundErrorExample": {
+                "summary": "Invalid id",
+                "value": {
+                  "errors": {
+                    "code": "invalid",
+                    "location": "path",
+                    "name": "id",
+                    "message": "Unknown id (of the dictionary)"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "EntryNotFoundError": {
+        "description": "No entry found for provided `entry-id`",
+        "content": {
+          "application/json": {
+            "schema": {
+              "required": [
+                "errors"
+              ],
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "required": [
+                      "code",
+                      "message"
+                    ],
+                    "properties": {
+                      "code": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "title": "ErrorSource",
+                        "required": [
+                          "location",
+                          "name"
+                        ],
+                        "properties": {
+                          "location": {
+                            "type": "string",
+                            "enum": [
+                              "path",
+                              "query",
+                              "body",
+                              "header"
+                            ]
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "The name of the property or parameter causing the error"
+                          },
+                          "path": {
+                            "type": "string",
+                            "description": "JSON path targeting the source of error (only used when location is `body`)"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "examples": {
+              "EntryNotFoundErrorExample": {
+                "summary": "Invalid entry-id",
+                "value": {
+                  "errors": {
+                    "code": "invalid",
+                    "location": "path",
+                    "name": "entry-id",
+                    "message": "Unknown entry-id"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "DictionaryOrEntryNotFoundError": {
+        "description": "No dictionary found for provided `id` (of the dictionary) or an entry for provided `entry-id`",
+        "content": {
+          "application/json": {
+            "schema": {
+              "required": [
+                "errors"
+              ],
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "required": [
+                      "code",
+                      "message"
+                    ],
+                    "properties": {
+                      "code": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "title": "ErrorSource",
+                        "required": [
+                          "location",
+                          "name"
+                        ],
+                        "properties": {
+                          "location": {
+                            "type": "string",
+                            "enum": [
+                              "path",
+                              "query",
+                              "body",
+                              "header"
+                            ]
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "The name of the property or parameter causing the error"
+                          },
+                          "path": {
+                            "type": "string",
+                            "description": "JSON path targeting the source of error (only used when location is `body`)"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "examples": {
+              "DictionaryNotFoundErrorExample": {
+                "summary": "Invalid id",
+                "value": {
+                  "errors": {
+                    "code": "invalid",
+                    "location": "path",
+                    "name": "id",
+                    "message": "Unknown id (of the dictionary)"
+                  }
+                }
+              },
+              "EntryNotFoundErrorExample": {
+                "summary": "Invalid entry-id",
+                "value": {
+                  "errors": {
+                    "code": "invalid",
+                    "location": "path",
+                    "name": "entry-id",
+                    "message": "Unknown entry-id"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "SenseNotFoundError": {
+        "description": "No sense found for provided `sense-id`",
+        "content": {
+          "application/json": {
+            "schema": {
+              "required": [
+                "errors"
+              ],
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "required": [
+                      "code",
+                      "message"
+                    ],
+                    "properties": {
+                      "code": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "title": "ErrorSource",
+                        "required": [
+                          "location",
+                          "name"
+                        ],
+                        "properties": {
+                          "location": {
+                            "type": "string",
+                            "enum": [
+                              "path",
+                              "query",
+                              "body",
+                              "header"
+                            ]
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "The name of the property or parameter causing the error"
+                          },
+                          "path": {
+                            "type": "string",
+                            "description": "JSON path targeting the source of error (only used when location is `body`)"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "examples": {
+              "DictionaryNotFoundErrorExample": {
+                "summary": "Invalid sense-id",
+                "value": {
+                  "errors": {
+                    "code": "invalid",
+                    "location": "path",
+                    "name": "sense-id",
+                    "message": "Unknown sense-id"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "AuthenticationError": {
+        "description": "Missing or invalid API key",
+        "content": {
+          "application/json": {
+            "schema": {
+              "required": [
+                "errors"
+              ],
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "required": [
+                      "code",
+                      "message"
+                    ],
+                    "properties": {
+                      "code": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "title": "ErrorSource",
+                        "required": [
+                          "location",
+                          "name"
+                        ],
+                        "properties": {
+                          "location": {
+                            "type": "string",
+                            "enum": [
+                              "path",
+                              "query",
+                              "body",
+                              "header"
+                            ]
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "The name of the property or parameter causing the error"
+                          },
+                          "path": {
+                            "type": "string",
+                            "description": "JSON path targeting the source of error (only used when location is `body`)"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "examples": {
+              "MissingTokenError": {
+                "summary": "No Api-Key header",
+                "description": "The header may be missing or its name contains a typo error",
+                "value": {
+                  "errors": [
+                    {
+                      "code": "required",
+                      "location": "header",
+                      "name": "Api-Key",
+                      "message": "Missing Api-Key header"
+                    }
+                  ]
+                }
+              },
+              "InvalidTokenError": {
+                "summary": "Invalid key in Api-Key header",
+                "value": {
+                  "errors": [
+                    {
+                      "code": "invalid",
+                      "location": "header",
+                      "name": "Api-Key",
+                      "message": "Invalid Api-Key header"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "UnexpectedError": {
+        "description": "Unexpected error. Consumer may try to send the request again.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "required": [
+                "errors"
+              ],
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "required": [
+                      "code",
+                      "message"
+                    ],
+                    "properties": {
+                      "code": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "title": "ErrorSource",
+                        "required": [
+                          "location",
+                          "name"
+                        ],
+                        "properties": {
+                          "location": {
+                            "type": "string",
+                            "enum": [
+                              "path",
+                              "query",
+                              "body",
+                              "header"
+                            ]
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "The name of the property or parameter causing the error"
+                          },
+                          "path": {
+                            "type": "string",
+                            "description": "JSON path targeting the source of error (only used when location is `body`)"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "examples": {
+              "UnexpectedError": {
+                "summary": "An unexpected error",
+                "value": {
+                  "errors": [
+                    {
+                      "code": "unexpected",
+                      "message": "An expected error occurred, you may try again later"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "search",
+      "description": "Searching within collection of items"
+    },
+    {
+      "name": "browse",
+      "description": "Material from a dictionary accessible by browsing page by page"
+    },
+    {
+      "name": "view",
+      "description": "Showing items."
+    },
+    {
+      "name": "info",
+      "description": "Information about the API and current project"
+    }
+  ],
+  "security": [
+    {
+      "cookieAuth": []
+    },
+    {
+      "basicAuth": []
+    }
+  ]
+}

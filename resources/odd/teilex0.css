@@ -5,3 +5,36 @@
 .italic {
     font-style: italic;
 }
+
+.normal {
+    font-style: normal !important;
+}
+
+.lex0.entry {
+    text-align: justify;
+}
+
+.lex0.fw {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas: 
+    "start center end";
+} 
+
+.lex0.fw .middle {
+    grid-area: center;
+    justify-self: center;
+}
+
+.lex0.fw .left  {
+    grid-area: start;
+    justify-self: start;
+}
+.lex0.fw .right {
+    grid-area: end;
+    justify-self: end;
+}
+
+.lex0.principal:not(.last)::after, .lex0.editor:not(.last)::after {
+    content: ' – ';
+}

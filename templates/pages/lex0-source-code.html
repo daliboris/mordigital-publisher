@@ -1,0 +1,108 @@
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes"/>
+        <link rel="shortcut icon" type="image/x-icon" href="resources/images/favicon.ico"/>
+        <link rel="shortcut icon" type="image/png" href="resources/images/favicon-16.png" sizes="16x16"/>
+        <link rel="shortcut icon" type="image/png" href="resources/images/favicon-24.png" sizes="24x24"/>
+        <link rel="shortcut icon" type="image/png" href="resources/images/favicon-32.png" sizes="32x32"/>
+        <link rel="shortcut icon" type="image/png" href="resources/images/favicon-64.png" sizes="64x64"/>
+
+        <title data-template="config:app-title"/>
+        <meta name="description" content="TEI Lex-0 Code (text with XML source)"/>
+        <meta name="pb-template" content="lex0-source-code.html"/>
+        <link rel="stylesheet" href="resources/css/theme.css"/>
+    <script type="module" src="pb-components-bundle.js" data-template="pages:load-components"/>
+        <style>
+            body {
+            --pb-view-height: calc(100vh - 212px);
+            --pb-view-column-gap: 1em;
+            }
+
+            #view1 {
+                flex: 1 1;
+                height: var(--pb-view-height);
+                overflow: auto;
+            }
+
+            .content-body {
+                position: relative;
+                display: flex;
+                justify-content: center;
+                padding: 0 20px;
+            }
+            
+
+            .content-body pb-code-highlight {
+                flex: 1 1;
+                max-width: 45%;
+                height: var(--pb-view-height);
+            }
+
+            .content-body .preview {
+                flex: 1 1;
+            }
+            aside pb-code-highlight {
+                --pb-facsimile-height: var(--pb-view-height);
+            }
+
+            @media (max-width: 769px) {
+                pb-code-highlight {
+                    display: none;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <pb-page data-template="pages:pb-page" unresolved="unresolved" locales="resources/i18n/{{ns}}/{{lng}}.json" locale-fallback-ns="app lex0">
+            <pb-document id="document1" data-template="pages:pb-document"/>
+            <app-drawer-layout force-narrow="force-narrow">
+                <app-drawer data-template="lib:include" data-template-path="templates/drawer.html"/>
+                <app-header-layout>
+                    <app-header slot="header" fixed="fixed">
+                        <app-toolbar data-template="lib:include" data-template-path="templates/menu.html"/>
+                        <app-toolbar data-template="lib:include" data-template-path="templates/toolbar.html"/>
+                    </app-header>
+                <pb-drawer toggle="tocToggle" class="toc" emit="toc" subscribe="transcription">
+                        <div class="drawer-content">
+                            <h3>
+                            <pb-i18n key="document.contents">Contents</pb-i18n>
+                            </h3>
+                            <pb-load id="toc" url="api/document/{doc}/contents?target=transcription&amp;icons=true" expand="expand" src="document1" subscribe="toc" load-once="load-once"><pb-i18n key="dialogs.loading">Loading</pb-i18n></pb-load>
+                        </div>
+                    </pb-drawer>                    
+                <section class="breadcrumbs">
+                                    <pb-view id="title-view1" src="document1" xpath="//teiHeader/fileDesc/titleStmt" view="single">
+                                        <pb-param name="mode" value="title"/>
+                                    </pb-view>
+                </section>
+                <main class="content-body">
+                    <pb-view id="view1" src="document1" column-separator=".tei-cb" append-footnotes="append-footnotes" subscribe="transcription" emit="transcription"/>
+                    <pb-code-highlight slot="page" id="code-highlight" language="xml" theme="default">
+                    </pb-code-highlight>
+                    <!--
+                    <pb-facsimile id="facsimile" type="image" show-navigation-control="show-navigation-control"
+                      visibility-ratio="0" show-home-control="show-home-control" default-zoom-level="0" subscribe="transcription"/>
+                    -->
+                      <!-- <aside class="preview">
+                        <pb-tabs>
+                         <paper-tab slot="tab">Facsimile</paper-tab>
+                         <paper-tab slot="tab">TEI</paper-tab>
+                         <div slot="page">
+                           <p>Facsimile</p>
+                         <pb-facsimile id="facsimile" type="image" show-navigation-control="show-navigation-control"
+                                        visibility-ratio="0" show-home-control="show-home-control" default-zoom-level="0" subscribe="transcription"/>
+                         </div>
+                     <pb-code-highlight slot="page" id="output" language="xml" theme="default"></pb-code-highlight>
+                 </pb-tabs>
+               </aside> -->
+                  </main>
+                </app-header-layout>
+            </app-drawer-layout>
+        </pb-page>
+    <div class="splash"/>
+    <script src="resources/scripts/teilex0.js"/>
+    </body>
+
+</html>

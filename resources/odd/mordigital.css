@@ -1,14 +1,56 @@
-.fw {
-    font-size: 125%;
-    font-weight: bold;
-}
-
-
-.fw:has(+ :not(.fw))::after {
-    content: '\a';
-    white-space: pre;
-}
-
 .gram {
-    color: red;
+    color: #a52a2a;
+}
+
+.domain {
+    color: #77AE82;
+}
+
+.lex0.fw {
+    font-size: 1.75rem;
+    font-style: normal;
+}
+
+.lex0.entry {
+    text-align: left;
+    text-indent: 1em;
+}
+
+.join-left {
+    margin-left: -0.25em;
+}
+.join-right {
+    margin-right: -0.25em;
+}
+
+.usg.attitude  {color: rosybrown; }
+.usg.domain  {color: green; }
+.usg.frequency {color: blue; }
+.usg.geographic {color: orange; }
+.usg.meaningType {color: red; }
+.usg.socioCultural {color: blue; }
+.usg.temporal {color: darkgoldenrod; }
+.usg.textType {color: violet; }
+.usg.time {color: darkgoldenrod; }
+
+div[class|=tei] > h2[class|=tei] {
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: normal;
+}
+section[class|=tei] > h1[class|=tei] {
+    text-align: center;
+    font-size: 2.5rem;
+}
+
+.smaller {
+    font-size: smaller;
+}
+
+.tei-titlePage {
+    font-size: 3rem;
+}
+
+.tei-docTitle {
+    font-size: 2.5rem;
 }

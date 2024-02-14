@@ -77,26 +77,28 @@
         </pb-media-query>
         <div class="settings">
             <h3><pb-i18n key="document.settings">Settings</pb-i18n></h3>
-            <pb-toggle-feature emit="transcription" subscribe="transcription" name="entry-parts" on="headword" off="">
+            <!-- <pb-toggle-feature emit="transcription" subscribe="transcription" name="entry-parts" on="headword" off="">
                 <pb-i18n key="dictionary.parts.hewdwords">Headwords only</pb-i18n>
-            </pb-toggle-feature>
+            </pb-toggle-feature> -->
+            <!-- 
             <pb-select-feature emit="transcription" subscribe="transcription" id="select-view" name="view" label="document.view.label" selected="1" items="[
                         {&quot;name&quot;: &quot;document.view.page&quot;, &quot;properties&quot;: {&quot;view&quot;: &quot;page&quot;}},
                         {&quot;name&quot;: &quot;document.view.div&quot;, &quot;properties&quot;: {&quot;view&quot;: &quot;div&quot;}},
                         {&quot;name&quot;: &quot;document.view.single&quot;, &quot;properties&quot;: {&quot;view&quot;: &quot;single&quot;}}
                         ]">
             </pb-select-feature>
-            <pb-toggle-feature emit="transcription" subscribe="transcription" properties-on='{"template": "proofreading.html", "view": "page"}' properties-off='{"view": "page"}'>
+            -->
+            <!-- <pb-toggle-feature emit="transcription" subscribe="transcription" properties-on='{"template": "proofreading.html", "view": "page"}' properties-off='{"view": "page"}'>
                 <pb-i18n key="document.view.proofreading">Proofreading</pb-i18n>
+            </pb-toggle-feature> -->
+            <pb-toggle-feature emit="transcription" subscribe="transcription" name="entry-parts" on="headword" off="">
+                <pb-i18n key="lex0.dictionary.parts.headwords-only">Headwords only</pb-i18n>
             </pb-toggle-feature>
-            <!--
-            <pb-toggle-feature emit="transcription" subscribe="transcription" name="view" on="page" off="div" init-from-view="init-from-view">
+            <pb-select-template/>
+            
+            <pb-toggle-feature emit="transcription" subscribe="transcription" name="view" on="page" off="single" init-from-view="init-from-view">
                 <pb-i18n key="document.view-type">Page View</pb-i18n>
             </pb-toggle-feature>
-            <pb-toggle-feature emit="transcription" subscribe="transcription" name="view" on="single" off="div" init-from-view="init-from-view">
-                <pb-i18n key="document.view-type-single">Whole Text</pb-i18n>
-            </pb-toggle-feature>
-            -->
             <!-- 
             <pb-edit-xml src="document1">
                 <paper-button alt="Edit source"><iron-icon icon="icons:code"/> <pb-i18n key="menu.download.view-tei"/></paper-button>

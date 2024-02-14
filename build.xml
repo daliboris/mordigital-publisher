@@ -6,7 +6,7 @@
     <property name="build.dir" value="build" />
     <property name="scripts.dir" value="node_modules/@daliboris/pb-components/dist" />
     <target name="clean">
-        <delete dir="$" />
+        <delete dir="${build}" />
         <delete dir="resources/scripts" includes="*.js *.map" />
         <delete dir="resources/images/leaflet" />
         <delete dir="resources/images/openseadragon" />
@@ -20,6 +20,10 @@
                 <include name="*.js" />
                 <include name="*.map" />
             </fileset>
+            <fileset dir="${fore.dir}">
+                <include name="*.js"/>
+                <include name="*.map"/>
+            </fileset>
         </copy>
         <copy todir="resources/images">
             <fileset dir="node_modules/@daliboris/pb-components/images">
@@ -29,6 +33,9 @@
         </copy>
         <copy todir="resources/css">
             <fileset dir="node_modules/@daliboris/pb-components/css" />
+            <fileset dir="${basedir}/node_modules/@jinntec/fore/resources">
+                <include name="*.css"/>
+            </fileset>
         </copy>
         <copy todir="resources/lib">
             <fileset dir="node_modules/@daliboris/pb-components/lib" />
@@ -41,7 +48,7 @@
     <target name="xar">
         <mkdir dir="${build.dir}" />
         <zip basedir="." destfile="${build.dir}/${project.app}-${project.version}.xar"
-            excludes="${build.dir}/* ${build.dir} node_modules/** *.build.properties build.properties .existdb.json *.xstrc *.code-workspace" />
+            excludes="${build.dir}/** ${build.dir} node_modules/** *.build.properties build.properties .existdb.json *.xstrc *.code-workspace" />
         <copy file="${build.dir}/${project.app}-${project.version}.xar" overwrite="true" tofile="${build.dir}/${project.app}.xar"/>
     </target>
     <target name="xar-complete" depends="clean,npm.install,xar" />

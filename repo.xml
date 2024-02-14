@@ -9,8 +9,11 @@
     <finish>post-install.xql</finish>
     <target>mordigital</target>
     <permissions user="mordigital" group="tei" mode="rw-r--r--" />
-    <deployed>2023-05-02T04:45:50.852+02:00</deployed>
+    <deployed />
     <changelog>
+        <change version="0.3.0">
+            <p xmlns="http://www.w3.org/1999/xhtml">Upgrade to be compatible with TEI Publisher 9.</p>
+        </change>
         <change version="0.1.0">
             <p xmlns="http://www.w3.org/1999/xhtml">Initial version of MORDigital Web Application. Implemented features:</p>
             <ul xmlns="http://www.w3.org/1999/xhtml">

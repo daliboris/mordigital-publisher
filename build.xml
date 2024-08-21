@@ -1,55 +1,83 @@
-<project name="mordigital" default="xar">
-    <xmlproperty file="expath-pkg.xml" /><!-- Adjust path below to match location of your npm binary -->
-    <property name="npm" value="npm" />
-    <property name="project.version" value="${package(version)}" />
-    <property name="project.app" value="${package(abbrev)}" />
-    <property name="build.dir" value="build" />
-    <property name="scripts.dir" value="node_modules/@daliboris/pb-components/dist" />
-    <target name="clean">
-        <delete dir="${build}" />
-        <delete dir="resources/scripts" includes="*.js *.map" />
-        <delete dir="resources/images/leaflet" />
-        <delete dir="resources/images/openseadragon" />
-        <delete dir="resources/i18n/common" />
-        <delete dir="resources/css" includes="leaflet/** prismjs/**" />
-        <delete dir="resources/lib" />
+<project name="${package(abbrev)}" default="xar">
+    <xmlproperty file="${basedir}/expath-pkg.xml"/>
+    <property file="${basedir}/local.build.properties" />
+    <property file="${basedir}/build.properties" />
+    <!-- Adjust path below to match location of your npm binary -->
+    <property name="npm" value="npm"/>
+    <property name="project.version" value="${package(version)}"/>
+    <property name="project.app" value="${package(abbrev)}"/>
+    <property name="build.dir" value="build"/>
+    <property name="app.build.dir" value="${build.dir}/${project.app}-${project.version}" />
+    <property name="scripts.dir" value="node_modules/@teipublisher/pb-components/dist"/>
+    <property name="fore.dir" value="node_modules/@jinntec/fore/dist"/>
+
+    <target name="clean" description="delete all build artefacts">
+        <delete includeemptydirs="true" failonerror="false">
+            <fileset dir="${app.build.dir}" includes="**/*" />
+        </delete>
     </target>
     <target name="prepare">
-        <copy todir="resources/scripts">
+        <mkdir dir="${build.dir}" />
+        <mkdir dir="${app.build.dir}" />
+        <copy todir="${app.build.dir}/resources/scripts">
             <fileset dir="${scripts.dir}">
-                <include name="*.js" />
-                <include name="*.map" />
-            </fileset>
-            <fileset dir="${fore.dir}">
                 <include name="*.js"/>
                 <include name="*.map"/>
             </fileset>
         </copy>
-        <copy todir="resources/images">
-            <fileset dir="node_modules/@daliboris/pb-components/images">
-                <include name="leaflet/*" />
-                <include name="openseadragon/*" />
+        <copy todir="${app.build.dir}/resources/scripts/fore">
+            <fileset dir="${fore.dir}">
+                <include name="*.js"/>
+                <include name="*.map"/>
+                <exclude name="*-dev.js"/>
+                <exclude name="*-dev.*.map"/>
             </fileset>
         </copy>
-        <copy todir="resources/css">
-            <fileset dir="node_modules/@daliboris/pb-components/css" />
-            <fileset dir="${basedir}/node_modules/@jinntec/fore/resources">
+        <copy todir="${app.build.dir}/resources/images">
+            <fileset dir="${scripts.dir}/../images">
+                <include name="leaflet/*"/>
+                <include name="openseadragon/*"/>
+            </fileset>
+        </copy>
+        <copy todir="${app.build.dir}/resources/css">
+            <fileset dir="${scripts.dir}/../css"/>
+            <fileset dir="${fore.dir}/../resources">
                 <include name="*.css"/>
             </fileset>
         </copy>
-        <copy todir="resources/lib">
-            <fileset dir="node_modules/@daliboris/pb-components/lib" />
+        <copy todir="${app.build.dir}/resources/lib">
+            <fileset dir="${scripts.dir}/../lib"/>
         </copy>
-        <copy todir="resources/i18n/common">
-            <fileset dir="${scripts.dir}/../i18n/common" />
+        <copy todir="${app.build.dir}/resources/i18n/app">
+            <fileset dir="./resources/i18n/app"/>
+        </copy>
+        <copy todir="${app.build.dir}/resources/i18n/common">
+            <fileset dir="${scripts.dir}/../i18n/common"/>
         </copy>
     </target>
     <target name="xar-local" depends="npm.install,prepare,xar" />
-    <target name="xar">
-        <mkdir dir="${build.dir}" />
-        <zip basedir="." destfile="${build.dir}/${project.app}-${project.version}.xar"
-            excludes="${build.dir}/** ${build.dir} node_modules/** *.build.properties build.properties .existdb.json *.xstrc *.code-workspace" />
+    <target name="xar" depends="prepare-xar,fix">
+        <zip basedir="${app.build.dir}" destfile="${build.dir}/${project.app}-${project.version}.xar">
+        </zip>
         <copy file="${build.dir}/${project.app}-${project.version}.xar" overwrite="true" tofile="${build.dir}/${project.app}.xar"/>
+    </target>
+    <target name="prepare-xar">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${app.build.dir}" />
+        <copy todir="${app.build.dir}">
+            <fileset dir="${basedir}">
+                <exclude name="node_modules/**"/>
+                <exclude name="${build.dir}/**"/>
+                <exclude name=".github/**"/>
+                <exclude name=".vscode/**"/>
+                <exclude name="*local*"/>
+                <exclude name="*.code-workspace"/>
+                <exclude name="*build.properties"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="fix">
+        <fixcrlf srcdir="${app.build.dir}" includes="**/*.xq*" eol="crlf" />
     </target>
     <target name="xar-complete" depends="clean,npm.install,xar" />
     <target name="npm.install">

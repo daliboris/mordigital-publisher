@@ -2,8 +2,12 @@
   "name" : "mordigital",
   "version" : "1.0.0",
   "description" : "António de Morais Silva, Diccionario de Lingua Portugueza",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/daliboris/mordigital-publisher.git"
+  },
   "dependencies" : {
     "@daliboris/pb-components" : "git+https://github.com/daliboris/tei-publisher-components/#project/lediir",
-    "@jinntec/fore": "^1.9.0"
+    "@jinntec/fore": "2.2.0"
   }
 }

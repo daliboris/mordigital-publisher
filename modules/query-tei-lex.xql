@@ -16,7 +16,7 @@ import module namespace dapi="http://teipublisher.com/api/documents" at "lib/api
 import module namespace router="http://e-editiones.org/roaster";
 import module namespace capi="http://teipublisher.com/api/collection" at "lib/api/collection.xql";
 (: import module namespace facets="http://teipublisher.com/facets" at "facets.xql"; :)
-import module namespace lfacets="http://www.tei-c.org/tei-simple/query/tei-lex-facets";
+import module namespace lfacets="http://www.tei-c.org/tei-simple/query/tei-lex-facets" at "facets-tei-lex.xql";
 
 import module namespace rq="http://www.daliboris.cz/ns/xquery/request"  at "request.xql";
 import module namespace qrp="https://www.daliboris.cz/ns/xquery/query-parser/1.0"  at "query-parser.xql";
@@ -555,7 +555,9 @@ declare %private function lapi:show-hits($request as map(*), $hits as item()*, $
 
 declare function lapi:get-html($hits as item()*, $request as map(*), $config) {
 
-    let $userParams := if(empty($request?parameters?entry-parts)) then () else map { 'entry-parts' : $request?parameters?entry-parts }
+    let $userParams := if(empty($request?parameters?entry-parts)) 
+        then () 
+        else map { "entry-parts" : $request?parameters?entry-parts }
 
 
     let $addScripts :=
@@ -1076,4 +1078,52 @@ declare %private function lapi:execute-query-return-hits($query as item(), $opti
     return
         $result
 
+};
+
+(:
+ See dapi:print in /modules/lib/api/document.xql 
+:)
+declare function lapi:get-html($hits as item()*, $request as map(*), $config) {
+  lapi:get-html($hits, $request, $config, "print")
+};
+
+(:
+ See dapi:generate-html in /modules/lib/api/document.xql 
+:)
+
+declare function lapi:get-html($hits as item()*, $request as map(*), $config, $outputMode as xs:string) {
+    let $addStyles :=
+        for $href in $request?parameters?style
+        return
+            <link rel="Stylesheet" href="{$href}"/>
+    let $addScripts :=
+        for $src in $request?parameters?script
+        return
+            <script src="{$src}"></script>
+    let $xml := <tei:TEI xmlns="http://www.tei-c.org/ns/1.0">{$hits}</tei:TEI>
+    (: set root parameter to the root document of hits :)
+    let $root := if(empty($hits)) then $xml else root($hits[1])
+    (:    let $out := $pm-config:web-transform($xml, map { "root": $root, "webcomponents": 7 }, $config?odd):)
+    let $out :=  if ($outputMode = 'print') then
+                            $pm-config:print-transform($xml, map { "root": $root, "webcomponents": 7 }, $config?odd)
+                        else
+                            $pm-config:web-transform($xml, map { "root": $root, "webcomponents": 7 }, $config?odd)
+    let $styles := ($addStyles,
+                    if (count($out) > 1) then $out[1] else (),
+                        <link rel="stylesheet" type="text/css" href="transform/{replace($config?odd, "^.*?/?([^/]+)\.odd$", "$1")}.css"/>
+                    )
+
+    (:   
+    let $log := console:log("lapi:get-html: styles count=" || count($styles) || ", content: " || $styles[1])
+    let $log := console:log("lapi:get-html: $config?odd=" || $config?odd)
+    let $log := console:log("lapi:get-html: $parameters?root")
+    let $log := console:log(($out[2], $out[1])[1]) 
+    :)
+    
+
+    let $main := <html>{($out[2], $out[1])[1]}</html>
+    return
+      (:        dapi:postprocess(($out[2], $out[1])[1], $styles, $config?odd, $request?parameters?base, $request?parameters?wc):)
+      (: dapi:postprocess(($out[2], $out[1])[1], $styles, $addScripts, $request?parameters?base, $request?parameters?wc) :)
+      dapi:postprocess($main, $styles, $addScripts, $request?parameters?base, $request?parameters?wc)
 };

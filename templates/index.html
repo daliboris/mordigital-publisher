@@ -254,7 +254,10 @@
         #download-button {
             display: none;
         }
-        
+        /* dashes between edtiors */
+        .lex0.principal:not(.last)::after, .lex0.editor:not(.last)::after {
+            content: ' – ';
+        }
     </style>
     </custom-style>
 </head>

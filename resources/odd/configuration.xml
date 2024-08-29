@@ -11,7 +11,7 @@
 
     Note: starting with tei-publisher-lib 3.1.0, the module import paths can be relative
     to the modules/ collection.
---><modules>
+--><modules skip-global="true">
     <!-- General latex extension functions -->
     <!--output mode="latex">
         <property name="class">"article"</property>

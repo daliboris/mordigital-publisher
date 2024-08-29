@@ -36,7 +36,7 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
  : In this case, change $config:webcomponents-cdn to point to http://localhost:port 
  : (default: 8000, but check where your server is running).
  :)
-declare variable $config:webcomponents :="2.19.0";
+declare variable $config:webcomponents :="local";
 
 (:~
  : CDN URL to use for loading webcomponents. Could be changed if you created your
@@ -47,7 +47,7 @@ declare variable $config:webcomponents-cdn := "https://cdn.jsdelivr.net/npm/@tei
 (: declare variable $config:webcomponents-cdn := "http://localhost:8000"; :)
 
 (: Version of fore to use for annotation editor :)
-declare variable $config:fore :="1.9.0";
+declare variable $config:fore :="2.2.0";
 
 (:~~
  : A list of regular expressions to check which external hosts are
@@ -141,6 +141,7 @@ declare variable $config:facets := array:join( ([
                 case "la" return "Latin"
                 case "fr" return "French"
                 case "en" return "English"
+                case "pt" return "Portuguese"
                 default return $label
         }
     }
@@ -748,3 +749,8 @@ declare function config:template-sort($request as map(*), $item as map(*)) {
     else
         1
 };
+
+declare variable $config:default-browse-sort-field := <sort field="sortKey" />;
+declare variable $config:default-search-sort-field := <sort field="sortKey" />;
+declare variable $config:data-default-search := $config:data-default || "/dictionaries";
+declare variable $config:data-default-metadata := $config:data-default || "/metadata";

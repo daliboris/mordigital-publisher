@@ -135,7 +135,7 @@ declare variable $custom-config:facets := [
     }
 ];
 
-declare variable $custom-config:login-domain := "eu.dariah.teilex0";
+declare variable $custom-config:login-domain := "pt.unl.fcsh.mordigital";
 
 (:
     Maximum items returned for autocomplete function.

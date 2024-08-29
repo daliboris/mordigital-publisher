@@ -1,0 +1,45 @@
+{
+    "lex0" : {
+        "facets" : {
+            "domain": "Charakteristika sémantického okruhu",
+            "domain-hierarchy": "Charakteristika sémantického okruhu (hierarchicky)",
+            "domain-contemporary" : "Moderní klasifikace",
+            "object-language": "Výchozí jazyk",
+            "target-language": "Cílový jazyk",
+            "polysemy": "Polysémie",
+            "dictionary": "Slovník",
+            "entry-type" : "Typ heslové statě",
+            "attitude" : "Charakteristika postojová",
+            "frequency" : "Charakteristika frekvenční",
+            "geographic" : "Charakteristika geografická",
+            "hint" : "Charakteristika (ostatní)",
+            "meaningType" : "Charakteristika typu významu",
+            "normativity" : "Charakteristika normativní",
+            "socioCultural" : "Charakteristika sociokulturní",
+            "textType" : "Charakteristika typu textu",
+            "time" : "Charakteristika časová",
+            "attestation" : "Zdroje",
+            "attestation-author" : "Zdroje (autor)",
+            "attestation-title" : "Zdroje (titul)",
+            "metamark" : "Metaznak",
+            "partOfSpeech": "Slovní druh",
+            "pos" : "Slovní druh",
+            "show-all": "Zobrazit vše"
+        },
+        "dictionary" : {
+            "parts" : {
+                "headwords-only" : "Pouze heslová slova"
+            }
+        },
+        "collection" : {
+            "about" : {
+                "header" : "O projektu",
+                "description" : "Popis projektu."
+            },
+            "dictionaries" : {
+                "header" : "Slovníky",
+                "description" : "Vědecké digitální edice slovnků."
+            }
+        }
+    }
+}

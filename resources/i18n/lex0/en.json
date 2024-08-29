@@ -1,0 +1,45 @@
+{
+    "lex0" : {
+        "facets" : {
+            "domain": "Domain label",
+            "domain-hierarchy": "Domain label (hierarchy)",
+            "domain-contemporary" : "Contemporary classification",
+            "object-language": "Object language",
+            "target-language": "Target language",
+            "polysemy": "Polysemy",
+            "dictionary": "Dictionary",
+            "entry-type" : "Entry type",
+            "attitude" : "Attitude label",
+            "frequency" : "Frequency label",
+            "geographic" : "Geographic label",
+            "hint" : "Hint label",
+            "meaningType" : "Meaning type label",
+            "normativity" : "Normativity label",
+            "socioCultural" : "Socio-cultural label",
+            "textType" : "Text type label",
+            "time" : "Temporal label",
+            "attestation" : "Attestation",
+            "attestation-author" : "Attestation (author)",
+            "attestation-title" : "Attestation (title)",
+            "metamark" : "Metamark",
+            "partOfSpeech": "Part of speech",
+            "pos" : "Part of speech",           
+            "show-all": "Show all"
+        },
+        "dictionary" : {
+            "parts" : {
+                "headwords-only" : "Headwords only"
+            }
+        },
+        "collection" : {
+            "about" : {
+                "header" : "About the Project",
+                "description" : "Description of the project."
+            },
+            "dictionaries" : {
+                "header" : "Dictionaries",
+                "description" : "Scholar edtions of the dictionaries."
+            }
+        }
+    }
+}

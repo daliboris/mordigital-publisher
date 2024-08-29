@@ -1,0 +1,45 @@
+{
+    "lex0": {
+        "facets": {
+            "domain": "Etiqueta de domínio",
+            "domain-hierarchy": "Etiqueta de domínio (hierarquia)",
+            "domain-contemporary" : "Classificação contemporânea",
+            "object-language": "Língua-objeto",
+            "target-language": "Língua-alvo",
+            "polysemy": "Polissemia",
+            "dictionary": "Dicionário",
+            "entry-type": "Tipo de artigo",
+            "attitude": "Etiqueta de atitude",
+            "frequency": "Etiqueta de frequência",
+            "geographic": "Etiqueta geográfica",
+            "hint": "Outras",
+            "meaningType": "Etiqueta de tipo de significado",
+            "normativity": "Etiqueta de normatividadde",
+            "socioCultural": "Etiqueta sociocultural",
+            "textType": "Etiqueta de tipo de texto",
+            "time": "Etiqueta temporal",
+            "attestation": "Abonação",
+            "attestation-author": "Abonação (autor)",
+            "attestation-title": "Abonação (título)",
+            "metamark": "Metamarcador",
+            "partOfSpeech": "Classe gramatical",
+            "pos": "Classe gramatical",
+            "show-all": "Mostrar tudo"
+        },
+        "dictionary" : {
+            "parts" : {
+                "headwords-only" : "Entradas apenas"
+            }
+        },
+        "collection" : {
+            "about" : {
+                "header" : "[Sobre o projeto]",
+                "description" : "[Descrição do projeto.]"
+            },
+            "dictionaries" : {
+                "header" : "[Dicionários]",
+                "description" : "[Edições académicas dos dicionários.]"
+            }
+        }
+    }
+}

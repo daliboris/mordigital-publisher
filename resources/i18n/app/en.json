@@ -32,5 +32,49 @@
         "parts" : {
                 "hewdwords" : "Headwords (lemmas)"
         }
+    },
+    "search": {
+        "author" : "Search authors",
+        "headings": {
+            "simple": "Simple",
+            "advanced": "Advanced",
+            "domains": "Semantic domains"
+        },
+        "labels": {
+            "field": "Search for",
+            "condition": "Condition",
+            "query": "Query",
+            "exactly": "exactly",
+            "start": "start",
+            "end": "end",
+            "everywhere": "everywhere",
+            "area": "Area",
+            "manually" : "Manually",
+            "manually-description" : "Apply search by facets manually. It allows you combine multiple values and/or facets.",
+            "highlight" : "Highlight",
+            "highlight-description" : "Highlights the found text on the results page."
+        },
+        "buttons": {
+            "search": "Search"
+        },
+        "fields": {
+            "lemma": "Headword",
+            "partOfSpeech": "Part-of-speech",
+            "pronunciation": "Pronunciation",
+            "domain": "Domain",
+            "definition" : "Definition",
+            "attitude" : "Attitude",
+            "time" : "Time",
+            "gloss" : "Gloss",
+            "anything": "Anything",
+            "and": "AND",
+            "andNot": "AND NOT CONTAINS",
+            "or": "OR"
+        },
+        "areas": {
+            "basic-fileds": "Basic fields",
+            "whole-text": "Anything",
+            "complexForm": "[Complex form]"
+        }
     }
 }

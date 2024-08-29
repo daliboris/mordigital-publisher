@@ -116,10 +116,25 @@
                     <model behaviour="inline"/>
                 </elementSpec>
                 <elementSpec ident="orth" mode="add">
+                    <model predicate="@expand" behaviour="alternate" useSourceRendition="true">
+                        <param name="default" value="." />
+                        <param name="alternate" value="@expand" />
+                    </model>
                     <model behaviour="inline" useSourceRendition="true"/>
                 </elementSpec>
                 <elementSpec ident="gram" mode="add">
+                    <model predicate="@expand" behaviour="alternate" useSourceRendition="true">
+                        <param name="default" value="." />
+                        <param name="alternate" value="@expand" />
+                    </model>
                     <model behaviour="inline" useSourceRendition="true"/>
+                </elementSpec>
+                <elementSpec ident="abbr" mode="add">
+                    <model predicate="@expand" behaviour="alternate" useSourceRendition="true">
+                        <param name="default" value="." />
+                        <param name="alternate" value="@expand" />
+                    </model>
+                    <model behaviour="inline" useSourceRendition="true" />
                 </elementSpec>
                 <elementSpec ident="note" mode="change">
                     <model predicate="$parameters?entry-parts='headword'" behaviour="omit"/>
@@ -137,6 +152,10 @@
                 </elementSpec>
                 <elementSpec ident="lbl" mode="add">
                     <model predicate="$parameters?entry-parts='headword'" behaviour="omit"/>
+                    <model predicate="@expand" behaviour="alternate" useSourceRendition="true">
+                        <param name="default" value="." />
+                        <param name="alternate" value="@expand" />
+                    </model>
                     <model behaviour="inline" useSourceRendition="true"/>
                 </elementSpec>
                 <elementSpec ident="ref" mode="change">
@@ -172,13 +191,15 @@
                     <model behaviour="inline" useSourceRendition="true"/>
                 </elementSpec>
                 <elementSpec ident="fw" mode="change">
+                    <model predicate="$parameters?entry-parts='headword'" behaviour="omit"/>
+                    <model predicate="$parameters?mode='search'" behaviour="omit"/>
                     <model predicate="ancestor::p or ancestor::ab" behaviour="inline"/>
                     <model predicate="@place and following-sibling::*[1][self::fw]" behaviour="pass-through" pb:mode="fw">
                         <param name="place" value="@place"/>
                         <param name="next" value="following-sibling::*[1]"/>
                         <param name="next-place" value="following-sibling::*[1]/@place"/>
                         <pb:template>
-                            <div class="lex0 fw">
+                            <div xmlns="" class="lex0 fw">
                                 <span class="[[place]]">[[content]]</span>
                                 <span class="[[next-place]]">[[next]]</span>
                             </div>
@@ -189,12 +210,58 @@
                     <model predicate="@place" behaviour="pass-through" pb:mode="fw">
                         <param name="place" value="@place"/>
                         <pb:template>
-                            <div class="lex0 fw">
+                            <div xmlns="" class="lex0 fw">
                                 <span class="[[place]]">[[content]]</span>
                             </div>
                         </pb:template>
                     </model>
                     <model behaviour="block"/>
+                </elementSpec>
+                <elementSpec ident="title" mode="change">
+                    <model predicate="$parameters?header='short'" behaviour="heading">
+                        <param name="level" value="5"/>
+                    </model>
+                    <modelSequence predicate="parent::titleStmt/parent::fileDesc">
+                        <model predicate="preceding-sibling::title" behaviour="text">
+                            <param name="content" value="' — '"/>
+                        </model>
+                        <model behaviour="inline"/>
+                    </modelSequence>
+                    <model predicate="not(@level) and parent::bibl[@type='attestation']" cssClass="title" useSourceRendition="true" behaviour="inline"/>
+                    <modelSequence predicate="@level='m' or not(@level)">
+                        <model behaviour="inline">
+                            <outputRendition xml:space="preserve">font-style: italic;</outputRendition>
+                        </model>
+                        <model predicate="ancestor::biblFull" behaviour="text">
+                            <param name="content" value="', '"/>
+                        </model>
+                    </modelSequence>
+                    <modelSequence predicate="@level='s' or @level='j'">
+                        <model behaviour="inline">
+                            <outputRendition xml:space="preserve">font-style: italic;</outputRendition>
+                        </model>
+                        <model predicate="following-sibling::* and  (ancestor::biblFull)" behaviour="text">
+                            <param name="content" value="', '"/>
+                        </model>
+                    </modelSequence>
+                    <modelSequence predicate="@level='u' or @level='a'">
+                        <model behaviour="inline">
+                            <outputRendition xml:space="preserve">
+                            font-style: italic;
+                            </outputRendition>
+                        </model>
+                        <model predicate="following-sibling::* and  (ancestor::biblFull)" behaviour="text">
+                            <param name="content" value="'. '"/>
+                        </model>
+                    </modelSequence>
+                    <model behaviour="inline">
+                        <outputRendition xml:space="preserve">font-style: italic;</outputRendition>
+                    </model>
+                </elementSpec>
+                <elementSpec ident="num" mode="add">
+                    <model predicate="$parameters?entry-parts='headword'" behaviour="omit" />
+                    <model predicate="parent::sense and empty(preceding-sibling::*)" behaviour="inline" cssClass="sense-number" useSourceRendition="true"/>
+                    <model behaviour="inline" />
                 </elementSpec>
             </schemaSpec>
         </body>

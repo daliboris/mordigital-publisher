@@ -54,26 +54,14 @@ declare function facets:print-table($config as map(*), $nodes as element()+, $va
                         let $value := if(exists($values)) then 
                             concat(string-join($values, '|'), '|', $label)
                         else $label
+                        let $content := facets-common:translate($config, $lang, $label)
                         return
                         <tr>
                             <td>
                                 <paper-checkbox class="facet" name="{config:facet-name($config?dimension)}" value="{$label}">
                                     { if ($label = $params) then attribute checked { "checked" } else () }
-                                    {
-                                        if (exists($config?output)) then
-                                            $config?output($label)
-                                        else
-                                            $label
-                                    }
+                                    <pb-i18n key="{$content}">{$content}</pb-i18n>
                                 </paper-checkbox>
-                                <!--
-                                <br />values: {$values}
-                                <br />value: {$value}
-                                <br />params: {string-join($params, "~")}
-                                <br />paths: {string-join($paths, "~")}
-                                <br />label: {$value}
-                                <br />head: {head($params)}
-                                -->
                             </td>
                             <td>{$freq}</td>
                         </tr>,
@@ -103,7 +91,7 @@ declare function facets:print-table($config as map(*), $nodes as element()+, $va
 };
 
 declare function facets:display($config as map(*), $nodes as element()+) {
-    let $params := facets-common:get-parameter("facet-" || $config?dimension)
+    let $params := facets-common:get-parameter(config:facet-name($config?dimension))
     let $lang := tokenize(facets-common:get-parameter("language"), '-')[1]
     let $table := facets:print-table($config, $nodes, (), $params)
 
@@ -144,7 +132,7 @@ declare function facets:display($config as map(*), $nodes as element()+) {
                         >
                         <select multiple="">
                         {
-                            for $param in facets-common:get-parameter("facet-" || $config?dimension)
+                            for $param in facets-common:get-parameter(config:facet-name($config?dimension))
                             let $label := facets-common:translate($config, $lang, $param)
                             return
                                 <option value="{$param}" data-i18n="{$label}" selected="">{$label}</option>

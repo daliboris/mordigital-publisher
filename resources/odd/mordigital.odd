@@ -48,6 +48,7 @@
                     <model behaviour="inline" />
                 </elementSpec>
                 <elementSpec ident="quote" mode="change">
+                    <model predicate="$parameters?entry-parts='headword'" behaviour="omit" />
                     <model predicate="ancestor::entry" behaviour="inline" cssClass="italic"
                         useSourceRendition="true">
                         <desc>If it is inside an entry then it is inline and without additional quotes</desc>
@@ -75,7 +76,7 @@
                     </modelSequence>
                     <model predicate="parent::bibl[@type='attestation']" behaviour="inline"
                         cssClass="italic">
-                        <desc>Titel in bibliographical reference of attestation (is in italic)</desc>
+                        <desc>Title in bibliographical reference of attestation (is in italic)</desc>
                     </model>
                     <model predicate="not(@level) and parent::bibl" behaviour="inline" />
                     <modelSequence predicate="@level='m' or not(@level)">
@@ -116,10 +117,17 @@
                 <elementSpec ident="usg" mode="change">
                     <model predicate="not(node())" behaviour="omit" />
                     <model predicate="$parameters?entry-parts='headword'" behaviour="omit" />
-                    <model predicate="@type='domain'" behaviour="inline" cssClass="italic">
+                    <model predicate="not(node())" behaviour="omit" />
+                    <model predicate="@type='domain'" behaviour="inline" cssClass="domain">
                         <desc>Domain labels (allways in italic)</desc>
                     </model>
-                    <model behaviour="inline" useSourceRendition="true" />
+                    <model behaviour="inline" useSourceRendition="true">
+                        <param name="type" value="@type"/>
+                        <param name="rend" value="@rend"/>
+                        <pb:template xmlns="">
+                            <span class="usg [[type]] [[rend]]">[[content]]</span>
+                        </pb:template>
+                    </model> 
                 </elementSpec>
                  <elementSpec ident="pb" mode="change">
                     <model predicate="starts-with(@facs, 'iiif:')" behaviour="webcomponent">
@@ -142,12 +150,6 @@
                         <outputRendition xml:space="preserve" scope="after">content: ']';</outputRendition>
                     </model>
                 </elementSpec>
-                <elementSpec ident="fw" mode="change">
-                    <model predicate="$parameters?entry-parts='headword'" behaviour="omit" />
-                    <model behaviour="inline" cssClass="fw">
-                        <desc>Framework</desc>
-                    </model>
-                </elementSpec>
                 <elementSpec ident="hi" mode="change">
                     <model predicate="$parameters?entry-parts='headword'" behaviour="omit" />
                     <model behaviour="inline" useSourceRendition="true">
@@ -162,6 +164,17 @@
                     <model predicate="$parameters?entry-parts='headword'" behaviour="omit" />
                     <model predicate="parent::listBibl" behaviour="listItem"/>
                     <model behaviour="inline"/>
+                </elementSpec>
+                <elementSpec ident="metamark" mode="change">
+                    <model predicate="$parameters?entry-parts='headword'" behaviour="omit" />
+                    <model behaviour="inline" useSourceRendition="true"/>
+                    <model predicate="@join='left'" behaviour="inline" cssClass="join-left" useSourceRendition="true" />
+                </elementSpec>
+                <elementSpec ident="pc" mode="change">
+                    <model predicate="$parameters?entry-parts='headword'" behaviour="omit" />
+                    <model predicate="@join='left'" behaviour="inline" cssClass="join-left" useSourceRendition="true" />
+                    <model predicate="@join='right'" behaviour="inline" cssClass="join-right" useSourceRendition="true" />
+                    <model behaviour="inline" useSourceRendition="true"/>
                 </elementSpec>
             </schemaSpec>
         </body>

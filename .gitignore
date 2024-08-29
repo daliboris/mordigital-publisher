@@ -28,6 +28,7 @@ node_modules
 resources/scripts/*.js
 resources/scripts/*.map
 !resources/scripts/browse.js
+!resources/scripts/search.js
 resources/lib/
 
 # CSS files imported by webcomponents (used for local environment)

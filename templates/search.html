@@ -108,7 +108,7 @@
     </head>
 
     <body>
-        <pb-page data-template="pages:pb-page" api-version="1.0" unresolved="unresolved" theme="resources/css/components.css">
+        <pb-page data-template="pages:pb-page" api-version="1.0" unresolved="unresolved" theme="resources/css/components.css" locale="resources/i18n/{{ns}}/{{lng}}.json" locale-fallback-ns="app lex0">
             <app-drawer-layout force-narrow="force-narrow">
                 <app-drawer slot="drawer" align="right">
                     <div class="drawer-content">
@@ -117,6 +117,7 @@
                         </pb-media-query>
                     </div>
                 </app-drawer>
+                
                 <app-header-layout>
                     <app-header slot="header" reveals="reveals" fixed="fixed" effects="waterfall">
                         <app-toolbar data-template="lib:include" data-template-path="templates/menu.html"/>
@@ -132,26 +133,69 @@
                             </select>
                             -->
                             <pb-paginate showPreviousNext="showPreviousNext" per-page="20" range="20" subscribe="search" emit="search" data-template="pages:parse-params"/>
-                            <pb-toggle-feature name="entry-parts" on="headword" off="">Forms only</pb-toggle-feature>
+                            <!-- <pb-toggle-feature name="entry-parts" on="headword" off="">Forms only</pb-toggle-feature> -->
+                            <!--
+                            <pb-toggle-feature emit="search" subscribe="search" name="entry-parts" on="headword" off="">
+                                 <pb-i18n key="lex0.dictionary.parts.headwords-only">Headwords only</pb-i18n>
+                            </pb-toggle-feature>
+                            -->
                             <pb-progress subscribe="search" indeterminate="indeterminate" bottom-item="bottom-item" data-target="menubar-after"/>
                         </app-toolbar>
                     </app-header>
                     <main>
-                        <pb-load id="results" url="api/lex/search" emit="search"/>
+                        <pb-load id="results" url="api/teilex0/search" emit="search"/>
                         <div class="search-panel">
                             <paper-card>
                                 <div class="card-content">
-                                    <pb-search id="search-form" subscribe="search" data-template="pages:parse-params" value="${query}" subforms=".facets" submit-on-load="submit-on-load">
+                                    <pb-search id="search-form" subscribe="search" data-template="pages:parse-params" 
+                                    value="${query}" 
+                                    source="api/teilex0/search/autocomplete"
+                                    subforms=".facets" 
+                                    submit-on-load="submit-on-load">
                                         <input type="hidden" name="per-page" value="20" data-template="pages:parse-params" />
+                                        <input type="hidden" name="ids" value="${ids}" data-template="pages:parse-params" />
+                                        <input type="hidden" name="field" value="${field}" data-template="pages:parse-params" />
+                                        <input type="hidden" name="position" value="${position}" data-template="pages:parse-params" />
+                                        <input type="hidden" name="field[1]" value="${field[1]}" data-template="pages:parse-params" />
+                                        <input type="hidden" name="position[1]" value="${position[1]}" data-template="pages:parse-params" />
+                                        <input type="hidden" name="query-advanced[1]" value="${query-advanced[1]}" data-template="pages:parse-params" />
+                                        <input type="hidden" name="condition[1]" value="${condition[1]}" data-template="pages:parse-params" />
+                                        <input type="hidden" name="field[2]" value="${field[2]}" data-template="pages:parse-params" />
+                                        <input type="hidden" name="position[2]" value="${position[2]}" data-template="pages:parse-params" />
+                                        <input type="hidden" name="query-advanced[2]" value="${query-advanced[2]}" data-template="pages:parse-params" />
+                                        <input type="hidden" name="condition[2]" value="${condition[2]}" data-template="pages:parse-params" />
+                                        <input type="hidden" name="field[3]" value="${field[3]}" data-template="pages:parse-params" />
+                                        <input type="hidden" name="position[3]" value="${position[3]}" data-template="pages:parse-params" />
+                                        <input type="hidden" name="query-advanced[3]" value="${query-advanced[3]}" data-template="pages:parse-params" />
+                                        <input type="hidden" name="condition[3]" value="${condition[3]}" data-template="pages:parse-params" />
+                                        <input type="hidden" name="sort" value="${sort}" data-template="pages:parse-params" />
+                                        <input type="hidden" name="order" value="${order}" data-template="pages:parse-params" />
+                                        <pb-popover theme="translucent">
+                                            <span slot="default">
+                                                <paper-checkbox name="highlight" aria-checked="${highlight}" value="true" data-template="pages:parse-params">
+                                                    <pb-i18n key="search.labels.highlight">Highlight</pb-i18n>
+                                                </paper-checkbox>
+                                            </span>
+                                            <template slot="alternate">
+                                                <p><pb-i18n key="search.labels.highlight-description">Highlights the found text on the results page.</pb-i18n></p>
+                                            </template>
+                                        </pb-popover>
                                         <!--
                                         <div class="targets">
                                             <paper-checkbox name="field" value="text">Search sections</paper-checkbox>
                                             <paper-checkbox name="field" value="head">Search headings</paper-checkbox>
                                         </div>
                                         -->
-                                        <pb-custom-form id="facets" url="api/lex/search/facets" class="facets" event="pb-results-received" subscribe="search" emit="search" />
+                                        <pb-custom-form id="facets" url="api/teilex0/search/facets" class="facets" event="pb-results-received" subscribe="search" emit="search" />
                                         <div class="search-buttons">
-                                            <paper-checkbox id="search-mode-checkbox" name="mode" value="manually"><pb-i18n key="search.manually">Manually</pb-i18n></paper-checkbox>
+                                            <pb-popover theme="translucent">
+                                                <span slot="default">
+                                                    <paper-checkbox id="search-mode-checkbox" name="mode" value="manually"><pb-i18n key="search.labels.manually">Manually</pb-i18n></paper-checkbox>
+                                                </span>
+                                                <template slot="alternate">
+                                                    <p><pb-i18n key="search.labels.manually-description">Apply search by facets manually. It allows you combine multiple values and/or facets.</pb-i18n></p>
+                                                </template>
+                                            </pb-popover>
                                             <paper-button   id="search-reset-button" slot="resetButton"><pb-i18n key="search.reset"></pb-i18n></paper-button>
                                             <paper-button   id="search-search-button" slot="searchButton"><pb-i18n key="search.search"></pb-i18n></paper-button>
                                         </div> 
@@ -165,27 +209,5 @@
         </pb-page>
         <div class="splash"/>
         <script src="resources/scripts/browse.js"/>
-        <script>
-            
-    (function () {
-        document.addEventListener('pb-page-ready', () => {
-            const paginate = document.querySelector('pb-paginate');
-            const load = document.querySelector('pb-load');
-            const search = document.querySelector('pb-search');
-            
-            /*
-            document.querySelector('#per-page').addEventListener('change', (e) => {
-                paginate.setAttribute("per-page", e.target.value);
-                paginate.setAttribute("start", "1");
-                //load.load();
-                search._doSubmit();
-            });
-            */
-
-        });
-
-    })();
-
-</script>
     </body>
 </html>

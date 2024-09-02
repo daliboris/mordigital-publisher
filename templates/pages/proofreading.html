@@ -62,7 +62,7 @@
     </head>
 
     <body>
-        <pb-page data-template="pages:pb-page" unresolved="unresolved" locales="resources/i18n/{{ns}}/{{lng}}.json">
+        <pb-page data-template="pages:pb-page" unresolved="unresolved" locales="resources/i18n/{{ns}}/{{lng}}.json" locale-fallback-ns="app lex0">
             <pb-document id="document1" data-template="pages:pb-document"/>
             <app-drawer-layout force-narrow="force-narrow">
                 <app-drawer data-template="lib:include" data-template-path="templates/drawer.html"/>
@@ -99,6 +99,7 @@
                         <pb-facsimile id="facsimile" base-uri="/mordigital/" type="image" default-zoom-level="0" subscribe="transcription"/>
                     </main>
                 </app-header-layout>
+                <app-toolbar data-template="lib:include" data-template-path="templates/footer.html"/>
             </app-drawer-layout>
         </pb-page>
         <div class="splash"/>

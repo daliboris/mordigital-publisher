@@ -263,7 +263,7 @@
 </head>
 
 <body>
-    <pb-page data-template="pages:pb-page" api-version="1.0" unresolved="unresolved" theme="resources/css/components.css" locales="resources/i18n/{{ns}}/{{lng}}.json">
+    <pb-page data-template="pages:pb-page" api-version="1.0" unresolved="unresolved" theme="resources/css/components.css" locales="resources/i18n/{{ns}}/{{lng}}.json" locale-fallback-ns="app lex0">
         <app-drawer-layout force-narrow="force-narrow">
             <app-drawer slot="drawer" align="right">
                 <div class="drawer-content">
@@ -323,12 +323,7 @@
                         </pb-restricted>
                     </section>
                 </main>
-                <footer class="version">
-                    MORDigital <span data-template="pages:version"/> /
-                    web components <pb-version/> /
-                    API <span data-template="pages:api-version"/> /
-                    background by <a href="https://www.freepik.com/free-vector/white-background-with-triangle-patterns_4403214.htm">starline</a>
-                </footer>
+                <app-toolbar data-template="lib:include" data-template-path="templates/footer.html"/>
             </app-header-layout>
         </app-drawer-layout>
         <paper-dialog id="downloadDialog">

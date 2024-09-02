@@ -9,9 +9,8 @@
   <link rel="shortcut icon" type="image/png" href="resources/images/favicon-64.png" sizes="64x64" />
   <title data-template="config:app-title"></title>
   <link rel="stylesheet" type="text/css" href="resources/fonts/font.css" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald&amp;display=swap" />
+  <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald&amp;display=swap" /> -->
   <link rel="stylesheet" href="resources/css/theme.css" />
-  <link rel="stylesheet" href="resources/css/lediir-theme.css"/>
   <script type="module" src="pb-components-bundle.js" data-template="pages:load-components"></script>
   <style>
    main {
@@ -166,6 +165,11 @@
   #download-button, .menu-edit-odd {
                 display: none;
   }
+  /*
+  pb-select paper-item {
+    width: 100%;
+  }
+  */
   </style>
 
   <style is="custom-style">
@@ -177,7 +181,7 @@
 </style>
  </head>
  <body>
-  <pb-page data-template="pages:pb-page" api-version="1.0"  unresolved="unresolved" theme="resources/css/components.css" locales="resources/i18n/{{ns}}/{{lng}}.json">
+  <pb-page data-template="pages:pb-page" api-version="1.0"  unresolved="unresolved" theme="resources/css/components.css" locales="resources/i18n/{{ns}}/{{lng}}.json" locale-fallback-ns="app lex0">
    <app-header-layout>
     <app-header slot="header" fixed="fixed" effects="waterfall">
      <app-toolbar data-template="lib:include" data-template-path="templates/menu.html"></app-toolbar>
@@ -205,8 +209,9 @@
       </pb-restricted>
       -->
     <!-- -->
+    
    </app-header-layout>
-   <app-toolbar data-template="lib:include" data-template-path="templates/footer.html"></app-toolbar>
+   <app-toolbar data-template="lib:include" data-template-path="templates/footer.html"/>
   </pb-page>
   <script src="resources/scripts/search.js">
   </script>

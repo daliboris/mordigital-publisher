@@ -173,11 +173,11 @@
                                         <pb-popover theme="translucent">
                                             <span slot="default">
                                                 <paper-checkbox name="highlight" aria-checked="${highlight}" value="true" data-template="pages:parse-params">
-                                                    <pb-i18n key="search.labels.highlight">Highlight</pb-i18n>
+                                                    <pb-i18n key="lex0.search.labels.highlight">Highlight</pb-i18n>
                                                 </paper-checkbox>
                                             </span>
                                             <template slot="alternate">
-                                                <p><pb-i18n key="search.labels.highlight-description">Highlights the found text on the results page.</pb-i18n></p>
+                                                <p><pb-i18n key="lex0.search.labels.highlight-description">Highlights the found text on the results page.</pb-i18n></p>
                                             </template>
                                         </pb-popover>
                                         <!--
@@ -190,10 +190,10 @@
                                         <div class="search-buttons">
                                             <pb-popover theme="translucent">
                                                 <span slot="default">
-                                                    <paper-checkbox id="search-mode-checkbox" name="mode" value="manually"><pb-i18n key="search.labels.manually">Manually</pb-i18n></paper-checkbox>
+                                                    <paper-checkbox id="search-mode-checkbox" name="mode" value="manually"><pb-i18n key="lex0.search.labels.manually">Manually</pb-i18n></paper-checkbox>
                                                 </span>
                                                 <template slot="alternate">
-                                                    <p><pb-i18n key="search.labels.manually-description">Apply search by facets manually. It allows you combine multiple values and/or facets.</pb-i18n></p>
+                                                    <p><pb-i18n key="lex0.search.labels.manually-description">Apply search by facets manually. It allows you combine multiple values and/or facets.</pb-i18n></p>
                                                 </template>
                                             </pb-popover>
                                             <paper-button   id="search-reset-button" slot="resetButton"><pb-i18n key="search.reset"></pb-i18n></paper-button>
@@ -205,7 +205,9 @@
                         </div>
                     </main>
                 </app-header-layout>
-            </app-drawer-layout>
+                <app-toolbar data-template="lib:include" data-template-path="templates/footer.html"/>
+                </app-drawer-layout>
+
         </pb-page>
         <div class="splash"/>
         <script src="resources/scripts/browse.js"/>

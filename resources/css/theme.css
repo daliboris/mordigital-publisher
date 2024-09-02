@@ -419,3 +419,14 @@ pb-drawer {
 .gitlab img {
     max-height: var(--pb-logo-image-height);
 }
+
+footer .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+ul.logos li {
+    display: inline;
+}

@@ -43,7 +43,9 @@
                 </paper-item>
             </paper-listbox>
         </paper-menu-button>
-        <a href="${app}/search-advanced.html" data-template="pages:parse-params">Advanced Search</a>
+        <a href="${app}/search-advanced.html" data-template="pages:parse-params">
+            <pb-i18n key="lex0.menu.advanced-search">Advanced Search</pb-i18n>
+        </a>
         <pb-restricted login="login">
             <paper-menu-button>
                 <a slot="dropdown-trigger"><pb-i18n key="menu.admin.title">Admin</pb-i18n></a>
@@ -71,9 +73,7 @@
         <input type="hidden" name="per-page" value="20" data-template="pages:parse-params" />
         <!-- <input type="hidden" name="highlight" value="true" data-template="pages:parse-params" /> -->
     </pb-search>
-    <!-- <pb-toggle-feature emit="search" subscribe="search" name="highlight" on="true" off="false">
-        <pb-i18n key="lex0.search.highlight">Highlight</pb-i18n>
-    </pb-toggle-feature> -->
+
     <pb-media-query query="min-width: 1024px">
        <pb-lang name="lang" data-template="pages:languages"/>
        <pb-login id="login" group="tei"/>

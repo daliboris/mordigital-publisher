@@ -115,6 +115,7 @@ declare variable $custom-config:facets := [
         "max": 5,
         "hierarchical": false()
     },
+    (:
     map {
         "dimension": "attestation-author",
         "heading": "lex0.facets.attestation-author",
@@ -127,6 +128,7 @@ declare variable $custom-config:facets := [
         "max": 5,
         "hierarchical": false()
     },
+    :)
     map {
         "dimension": "metamark",
         "heading": "lex0.facets.metamark",

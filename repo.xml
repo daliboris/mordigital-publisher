@@ -11,6 +11,16 @@
     <permissions user="mordigital" group="tei" mode="rw-r--r--" />
     <deployed />
     <changelog>
+        <change version="0.4.0">
+            <ul xmlns="http://www.w3.org/1999/xhtml">
+                <li>page footer with project information, logos and contacts</li>
+                <li>removing Czech translation, added new chunks with Partuguese translation</li>
+                <li>webcomponents: using latest versions, local version on the server</li>
+                <li>code refacotring (TEI Lex-0 related XQuery code)</li>
+                <li>hiding unwanted elements in headword only view</li>
+                <li>showing expand values as alternate (&lt;orth&gt;, &lt;gram&gt;, &lt;abbr&gt; &lt;lbl&gt;);</li>
+            </ul>
+        </change>
         <change version="0.3.0">
             <p xmlns="http://www.w3.org/1999/xhtml">Upgrade to be compatible with TEI Publisher 9.</p>
         </change>

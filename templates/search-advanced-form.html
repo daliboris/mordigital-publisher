@@ -5,15 +5,15 @@
          <template>
             <div class="search-advanced-container">
              <pb-custom-form id="area-advanced-form">
-              <pb-select data-i18n="[label]search.labels.field" name="field" value="headword" aria-disabled="false" dir="null">
+              <pb-select data-i18n="[label]lex0.search.labels.field" name="field" value="lemma" aria-disabled="false" dir="null">
                     <paper-item value="lemma">
-                        <pb-i18n key="search.fields.lemma">lemma</pb-i18n>
+                        <pb-i18n key="lex0.search.fields.lemma">lemma</pb-i18n>
                     </paper-item>
-                    <paper-item value="pos" data-i18n="[label]search.fields.partOfSpeech">
+                    <paper-item value="pos" data-i18n="[label]lex0.search.fields.partOfSpeech">
                      <pb-i18n key="lex0.facets.pos">part-of-speech</pb-i18n>
                     </paper-item>
                     <paper-item value="definition">
-                        <pb-i18n key="search.fields.definition">definition</pb-i18n>
+                        <pb-i18n key="lex0.search.fields.definition">definition</pb-i18n>
                     </paper-item>
                     <paper-item value="domain">
                         <pb-i18n key="lex0.facets.domain">domain</pb-i18n>
@@ -54,7 +54,7 @@
                     </paper-item>
                     
                     <paper-item value="text">
-                     <pb-i18n key="search.fields.anything">anything</pb-i18n>
+                     <pb-i18n key="lex0.search.fields.anything">anything</pb-i18n>
                     </paper-item>
                   </pb-select>
             </pb-custom-form>
@@ -70,46 +70,46 @@
                 <div>
                     <label for="positionChoiceExactly-advanced">
                         <input type="radio" id="positionChoiceExactly-advanced" name="position" value="exactly" checked="checked" />
-                        <pb-i18n key="search.labels.exactly">exactly</pb-i18n>
+                        <pb-i18n key="lex0.search.labels.exactly">exactly</pb-i18n>
                     </label>
                 
                     <label for="contactChoiceStart-advanced">
                         <input type="radio" id="contactChoiceStart-advanced" name="position" value="start" />
-                         <pb-i18n key="search.labels.start">start</pb-i18n>
+                         <pb-i18n key="lex0.search.labels.start">start</pb-i18n>
                         </label>
                 
                     <label for="contactChoiceEnd-advanced">
                         <input type="radio" id="contactChoiceEnd-advanced" name="position" value="end" />
-                        <pb-i18n key="search.labels.end">end</pb-i18n>
+                        <pb-i18n key="lex0.search.labels.end">end</pb-i18n>
                     </label>
                 
                     <label for="contactChoiceEverywhere-advanced">
                         <input type="radio" id="contactChoiceEverywhere-advanced" name="position" value="everywhere" />
-                        <pb-i18n key="search.labels.everywhere">everywhere</pb-i18n>
+                        <pb-i18n key="lex0.search.labels.everywhere">everywhere</pb-i18n>
                     </label>
                 </div>
          </pb-custom-form>
           </div>
           
-        <pb-select id="condition" name="condition" data-i18n="[label]search.labels.condition" value="and" aria-disabled="false" dir="null">
-             <paper-item value="and" data-i18n="[label]search.fields.and">
-              <pb-i18n key="search.fields.and">AND</pb-i18n>
+        <pb-select id="condition" name="condition" data-i18n="[label]lex0.search.labels.condition" value="and" aria-disabled="false" dir="null">
+             <paper-item value="and" data-i18n="[label]lex0.search.fields.and">
+              <pb-i18n key="lex0.search.fields.and">AND</pb-i18n>
              </paper-item>
-             <paper-item value="or" data-i18n="[label]search.fields.or">
-              <pb-i18n key="search.fields.or">OR</pb-i18n>
+             <paper-item value="or" data-i18n="[label]lex0.search.fields.or">
+              <pb-i18n key="lex0.search.fields.or">OR</pb-i18n>
              </paper-item>
-             <paper-item value="andNot" data-i18n="[label]search.fields.andNot">
-              <pb-i18n key="search.fields.andNot">AND NOT CONTAINS</pb-i18n>
+             <paper-item value="andNot" data-i18n="[label]lex0.search.fields.andNot">
+              <pb-i18n key="lex0.search.fields.andNot">AND NOT CONTAINS</pb-i18n>
              </paper-item>
            </pb-select>
 
         </div>
-                   <!-- <paper-input id="text" data-i18n="[label]search.labels.query" type="search" name="query"></paper-input> -->
+                   <!-- <paper-input id="text" data-i18n="[label]lex0.search.labels.query" type="search" name="query"></paper-input> -->
          </template>
         </pb-repeat>
         <button type="submit">
          <paper-button>
-          <pb-i18n key="search.buttons.search">Search</pb-i18n>
+          <pb-i18n key="lex0.search.buttons.search">Search</pb-i18n>
          </paper-button>
         </button>
        </form>

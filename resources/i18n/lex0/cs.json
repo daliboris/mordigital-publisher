@@ -24,6 +24,13 @@
             "metamark" : "Metaznak",
             "partOfSpeech": "Slovní druh",
             "pos" : "Slovní druh",
+            "person" : "Osoba",
+            "number" : "Číslo",
+            "tense" : "Čas",
+            "mood" : "Způsob",
+            "voice" : "Slovesný rod",
+            "gender" : "Jmenný rod",
+            "aspect" : "Vid",
             "show-all": "Zobrazit vše"
         },
         "dictionary" : {
@@ -39,6 +46,57 @@
             "dictionaries" : {
                 "header" : "Slovníky",
                 "description" : "Vědecké digitální edice slovnků."
+            }
+        },
+        "menu" : {
+            "advanced-search" : "Pokročilé hledání"
+        },
+        "search": {
+            "author" : "Autora",
+            
+            "headings": {
+                "simple": "Jednoduché",
+                "advanced": "Pokročilé",
+                "domains": "Sémantické okruhy"
+            },
+            "labels": {
+                "field": "Prohledat",
+                "condition": "Podmínka",
+                "query": "Dotaz",
+                "exactly": "přesně",
+                "start": "na začátku",
+                "end": "na konci",
+                "everywhere": "všude",
+                "area": "oblast",
+                "manually" : "Ručně",
+                "manually-description" : "Hledat pomocí faset ručně. Umožní kombinvat více hodnot a/nebo faset.",
+                "highlight" : "Zvýraznit",
+                "highlight-description" : "Zvýrazní nalezený text na stránce s výsledky."
+            },
+            "buttons": {
+                "search": "Hledat"
+            },
+            "fields": {
+                "lemma": "heslo",
+                "partOfSpeech": "slovní druh",
+                "pronunciation": "výslovnost",
+                "domain": "sémantický okruh",
+                "reversal": "zpětný odkaz",
+                "reversal-cs": "zpětný odkaz (cs)",
+                "reversal-en": "zpětný odkaz (en)",
+                "definition" : "význam",
+                "definition-cs" : "význam (cs)",
+                "definition-en" : "význam (en)",
+                "complexForm": "komplexní výraz",
+                "anything": "vše",
+                "and": "A",
+                "andNot": "A NEOBSAHUJE",
+                "or": "NEBO"
+            },
+            "areas": {
+                "basic-fileds": "základní pole",
+                "whole-text": "vše",
+                "complexForm": "komplexní výraz"
             }
         }
     }

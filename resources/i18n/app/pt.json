@@ -1,36 +1,36 @@
 {
     "app": {
         "facets": {
-            "partOfSpeech": "[Part-of-speech]",
-            "domain": "[Domain]",
-            "object-language": "[Object language]",
-            "target-language": "[Target language]",
-            "polysemy": "[Polysemy]",
-            "dictionary": "[Dictionary]",
-            "attestation" : "[Attestation]",
-            "show-all": "[Show all]"
+            "partOfSpeech": "Classe gramatical",
+            "domain": "Domínio",
+            "object-language": "Língua-objeto",
+            "target-language": "Língua-alvo",
+            "polysemy": "Polissemia",
+            "dictionary": "Dicionário",
+            "attestation" : "Abonação",
+            "show-all": "Mostrar tudo"
         },
         "languages": {
-            "cs": "[Czech]",
-            "en": "[English]",
-            "pt": "[Portuguese]"
+            "cs": "Checo",
+            "en": "Inglês",
+            "pt": "Português"
         },
         "messages": {
-            "restricted": "[You need to be logged in to see this content.]"
+            "restricted": "Precisa de estar logado para ver este conteúdo."
         }
     },
     "document": {
         "view" : {
-            "label" : "[Show]",
-            "page" : "[Pages]",
-            "div" : "[Chapters]",
-            "single" : "[Whole text]",
-            "proofreading" : "[Proofreading]"
+            "label" : "Mostrar",
+            "page" : "Páginas",
+            "div" : "Capítulos",
+            "single" : "Texto completo",
+            "proofreading" : "Revisão de texto"
         }
     },
     "dictionary" : {
         "parts" : {
-                "hewdwords" : "[Headwords (lemmas)]"
+                "hewdwords" : "Entradas (lemas)"
         }
     }
 }

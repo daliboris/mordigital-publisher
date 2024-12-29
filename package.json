@@ -4,10 +4,13 @@
   "description" : "António de Morais Silva, Diccionario de Lingua Portugueza",
   "repository": {
     "type": "git",
-    "url": "https://github.com/daliboris/mordigital-publisher.git"
+    "url": "git+https://github.com/daliboris/mordigital-publisher.git"
   },
   "dependencies" : {
     "@daliboris/pb-components" : "git+https://github.com/daliboris/tei-publisher-components/#project/lediir",
     "@jinntec/fore": "2.2.0"
-  }
+  },
+  "homepage": "https://github.com/daliboris/mordigital-publisher#readme",
+  "author": "Boris Lehečka",
+  "license": "GPL-3.0"
 }

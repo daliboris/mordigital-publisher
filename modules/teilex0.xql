@@ -137,7 +137,7 @@ declare function lapi:dictionaries($request as map(*)) {
 declare function lapi:search($request as map(*)) { 
     
     (: <result name="lapi:search" type="TODO" />  :)
-    
+    let $mode := "search"
     let $exist-db-query := lexq:get-exist-db-query-xml($request)
     
     let $log := if($lapi:debug) 
@@ -164,7 +164,7 @@ declare function lapi:search($request as map(*)) {
         return if($request?parameters?format = "xml") then
                 lapi:show-hits-xml($request, $hits, session:get-attribute($config:session-prefix || ".docs"), "div", "http://www.tei-c.org/ns/1.0")
             else
-             lapi:show-hits-html($request, $hits, session:get-attribute($config:session-prefix || ".docs"))
+             lapi:show-hits-html($request, $hits, session:get-attribute($config:session-prefix || ".docs"), $mode)
     else
         (:Otherwise, perform the query.:)
         (: Here the actual query commences. This is split into two parts, the first for a Lucene query and the second for an ngram query. :)
@@ -192,7 +192,7 @@ declare function lapi:search($request as map(*)) {
         return if($request?parameters?format = "xml") then
                 lapi:show-hits-xml($request, $hits, $request?parameters?ids, "div", "http://www.tei-c.org/ns/1.0")
             else
-                lapi:show-hits-html($request, $hits, $request?parameters?ids)
+                lapi:show-hits-html($request, $hits, $request?parameters?ids, $mode)
    
 };
 declare %private function lapi:get-highlight-value($request as map(*)) {
@@ -382,7 +382,7 @@ declare %private function lapi:show-hits-xml($request as map(*), $hits as item()
 };
 
 
-declare %private function lapi:show-hits-html($request as map(*), $hits as item()*, $docs as xs:string*) {
+declare %private function lapi:show-hits-html($request as map(*), $hits as item()*, $docs as xs:string*, $mode as xs:string) {
     response:set-header("pb-total", xs:string(count($hits))),
     response:set-header("pb-start", xs:string($request?parameters?start)),
     let $query-start-time := util:system-time()
@@ -401,7 +401,7 @@ declare %private function lapi:show-hits-html($request as map(*), $hits as item(
             console:log("api:show-hits-html: $highlight and $result: " || ($highlight and exists($result)))
             )
              else ()
-    let $result-html := lapi:get-html($expanded, $request, $config)
+    let $result-html := lapi:get-html($expanded, $request, $config, $mode)
     let $log := lapi:log-duration($query-start-time, "[lapi:show-hits-html] after lapi:get-html:")
     return 
         $result-html
@@ -452,8 +452,8 @@ declare %private function lapi:execute-query-return-hits($query as item(), $opti
 (:
  See dapi:print in /modules/lib/api/document.xql 
 :)
-declare function lapi:get-html($hits as item()*, $request as map(*), $config) {
-  lapi:get-html($hits, $request, $config, "print")
+declare function lapi:get-html($hits as item()*, $request as map(*), $config, $mode) {
+  lapi:get-html($hits, $request, $config, "print", $mode)
 };
 
 
@@ -461,7 +461,12 @@ declare function lapi:get-html($hits as item()*, $request as map(*), $config) {
  See dapi:generate-html in /modules/lib/api/document.xql 
 :)
 
-declare function lapi:get-html($hits as item()*, $request as map(*), $config, $outputMode as xs:string) {
+(: TODO: 
+    add param $mode : browse|search|facets
+    +
+    {$pm-config:web-transform($entry, map {"mode" : "register-entry"}, "annotations.odd")}
+ :)
+declare function lapi:get-html($hits as item()*, $request as map(*), $config, $outputMode as xs:string, $mode as xs:string) {
     let $addStyles :=
         for $href in $request?parameters?style
         return
@@ -475,9 +480,9 @@ declare function lapi:get-html($hits as item()*, $request as map(*), $config, $o
     let $root := if(empty($hits)) then $xml else root($hits[1])
     (:    let $out := $pm-config:web-transform($xml, map { "root": $root, "webcomponents": 7 }, $config?odd):)
     let $out :=  if ($outputMode = 'print') then
-                            $pm-config:print-transform($xml, map { "root": $root, "webcomponents": 7 }, $config?odd)
+                            $pm-config:print-transform($xml, map { "root": $root, "webcomponents": 7, "mode" : $mode }, $config?odd)
                         else
-                            $pm-config:web-transform($xml, map { "root": $root, "webcomponents": 7 }, $config?odd)
+                            $pm-config:web-transform($xml, map { "root": $root, "webcomponents": 7, "mode" : $mode }, $config?odd)
     let $styles := ($addStyles,
                     if (count($out) > 1) then $out[1] else (),
                         <link rel="stylesheet" type="text/css" href="transform/{replace($config?odd, "^.*?/?([^/]+)\.odd$", "$1")}.css"/>

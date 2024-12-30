@@ -1,4 +1,4 @@
-<package xmlns="http://expath.org/ns/pkg" spec="1.0" version="0.5.2"
+<package xmlns="http://expath.org/ns/pkg" spec="1.0" version="0.5.3"
     name="https://mordigital.fcsh.unl.pt/apps/mordigital" abbrev="mordigital">
     <title>António de Morais Silva, Diccionario da Lingua Portugueza</title>
     <dependency processor="http://exist-db.org" semver="6.2.0" />

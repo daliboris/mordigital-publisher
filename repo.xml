@@ -11,6 +11,11 @@
     <permissions user="mordigital" group="tei" mode="rw-r--r--" />
     <deployed />
     <changelog>
+        <change version="0.5.3">
+            <ul xmlns="http://www.w3.org/1999/xhtml">
+                <li>improving Dockerfile (removing local build properties file only if it exists)</li>
+            </ul>
+        </change>
         <change version="0.5.2">
             <ul xmlns="http://www.w3.org/1999/xhtml">
                 <li>improving Dockerfile (right modules, properties and versions)</li>

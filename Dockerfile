@@ -69,7 +69,7 @@ RUN if [ "${PUBLISHER_LIB_VERSION}" = "master" ]; then \
 # Build mordigital-publisher
 COPY . mordigital-publisher/
 RUN  cd mordigital-publisher \
-    && [ -f local.build.properties ] && rm rm local.build.properties \
+    && [ -f local.build.properties ] && rm local.build.properties \
     && sed -i 's/$config:webcomponents :=.*;/$config:webcomponents := "local";/' modules/config.xqm \
     && ant xar-local
 

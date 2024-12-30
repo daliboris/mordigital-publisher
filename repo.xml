@@ -11,6 +11,12 @@
     <permissions user="mordigital" group="tei" mode="rw-r--r--" />
     <deployed />
     <changelog>
+        <change version="0.5.2">
+            <ul xmlns="http://www.w3.org/1999/xhtml">
+                <li>improving Dockerfile (right modules, properties and versions)</li>
+                <li>build properties for Linux environment</li>
+            </ul>
+        </change>
         <change version="0.5.1">
             <ul xmlns="http://www.w3.org/1999/xhtml">
                 <li>adding Dockerfile</li>

@@ -41,18 +41,18 @@ FROM builder as tei
 # TODO(DP): Demo App Versions need updating
 ARG TEMPLATING_VERSION=1.1.0
 ARG PUBLISHER_LIB_VERSION=4.0.1
-ARG ROUTER_VERSION=1.9.1
-ARG MORDIGITALDATA_VERSION=0.5.0
+ARG ROUTER_VERSION=1.9.0
+ARG MORDIGITALDATA_VERSION=v0.5.0
 
 # add key
 RUN  mkdir -p ~/.ssh && ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 
 # Build mordigital-data
-RUN  git clone https://github.com/eeditiones/shakespeare.git \
+RUN  git clone https://github.com/daliboris/mordigital-data.git \
     && cd mordigital-data \
     && git checkout ${MORDIGITALDATA_VERSION} \
     && sed -i 's/$config:webcomponents :=.*;/$config:webcomponents := "local";/' modules/config.xqm \
-    && ant xar-local
+    && ant xar
 
 
 
@@ -69,6 +69,7 @@ RUN if [ "${PUBLISHER_LIB_VERSION}" = "master" ]; then \
 # Build mordigital-publisher
 COPY . mordigital-publisher/
 RUN  cd mordigital-publisher \
+    && rm local.build.properties \
     && sed -i 's/$config:webcomponents :=.*;/$config:webcomponents := "local";/' modules/config.xqm \
     && ant xar-local
 
@@ -77,8 +78,8 @@ RUN curl -L -o /tmp/templating-${TEMPLATING_VERSION}.xar http://exist-db.org/exi
 
 FROM duncdrum/existdb:6.2.0-debug-j8
 
-COPY --from=tei /tmp/mordigital-publisher/build/*.xar /exist/autodeploy/
-COPY --from=tei /tmp/mordigital-data/build/*.xar /exist/autodeploy/
+COPY --from=tei /tmp/mordigital-publisher/build/mordigital.xar /exist/autodeploy/
+COPY --from=tei /tmp/mordigital-data/build/mordigital-data.xar /exist/autodeploy/
 COPY --from=tei /tmp/*.xar /exist/autodeploy/
 
 WORKDIR /exist

@@ -45,7 +45,8 @@ ARG ROUTER_VERSION=1.9.0
 ARG MORDIGITALDATA_VERSION=v0.5.0
 
 # add key
-RUN  mkdir -p ~/.ssh && ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+# fails on production server with error "write (github.com): No route to host"
+# RUN  mkdir -p ~/.ssh && ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 
 # Build mordigital-data
 RUN  git clone https://github.com/daliboris/mordigital-data.git \
